@@ -7,14 +7,14 @@ namespace Courses.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        //public MainWindow()
-        //{
-        //    InitializeComponent();
-        //}
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
 
-        //private void InitializeComponent()
+        //private void ButtonMenu_Click(object sender, RoutedEventArgs e)
         //{
-        //    throw new NotImplementedException();
+        //    btnMenu.Content = "Course added?";
         //}
     }
 }
