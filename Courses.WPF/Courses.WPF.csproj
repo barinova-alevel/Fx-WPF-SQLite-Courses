@@ -12,10 +12,6 @@
     <None Remove="Images\add.png" />
   </ItemGroup>-->
 
-  <ItemGroup>
-    <Folder Include="ViewModel\" />
-  </ItemGroup>
-
   <!--<ItemGroup>
     <Resource Include="Images\add.png" />
   </ItemGroup>-->

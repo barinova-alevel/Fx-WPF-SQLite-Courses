@@ -1,6 +1,6 @@
 ﻿namespace Courses.WPF.Model
 {
-    public class CourseModel
+    public class Course
     {
         public int CourseId { get; set; }
         public string? Name { get; set; }
