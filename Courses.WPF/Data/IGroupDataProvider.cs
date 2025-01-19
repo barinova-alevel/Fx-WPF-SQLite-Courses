@@ -4,6 +4,6 @@ namespace Courses.WPF.Data
 {
     public interface IGroupDataProvider
     {
-        Task<IEnumerable<Group>?> GetAllAsync();
+        Task<IEnumerable<StudentsGroup>?> GetAllAsync();
     }
 }

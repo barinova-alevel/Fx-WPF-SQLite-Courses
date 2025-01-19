@@ -1,24 +1,20 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using Courses.WPF.Data;
 using Courses.WPF.Model;
 
 namespace Courses.WPF.ViewModel
 {
-    public class GroupsViewModel : INotifyPropertyChanged
+    public class GroupsViewModel : ViewModelBase
     {
         private readonly IGroupDataProvider _groupDataProvider;
-        private Group? _selectedGroup;
-
-        public event PropertyChangedEventHandler? PropertyChanged;
+        private GroupItemViewModel? _selectedGroup;
 
         public GroupsViewModel(IGroupDataProvider groupDataProvider)
         {
             _groupDataProvider = groupDataProvider;
         }
-        public ObservableCollection<Group> Groups { get; } = new();
-        public Group? SelectedGroup { 
+        public ObservableCollection<GroupItemViewModel> Groups { get; } = new();
+        public GroupItemViewModel? SelectedGroup { 
             get => _selectedGroup;
             set 
             { 
@@ -40,7 +36,7 @@ namespace Courses.WPF.ViewModel
             {
                 foreach (var group in groups)
                 {
-                    Groups.Add(group);
+                    Groups.Add(new GroupItemViewModel(group));
                 }
             }
         }
@@ -52,14 +48,12 @@ namespace Courses.WPF.ViewModel
 
         internal void Create()
         {
-            var group = new Group { Name = "Group name"};
-            Groups.Add(group);
-            SelectedGroup = group;
+            var group = new StudentsGroup { Name = "Group name"};
+            var viewModel = new GroupItemViewModel(group);
+            Groups.Add(viewModel);
+            SelectedGroup = viewModel;
         }
 
-        private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        
     }
 }
