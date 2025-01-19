@@ -12,17 +12,25 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Courses.WPF.Data;
+using Courses.WPF.ViewModel;
 
 namespace Courses.WPF.View
 {
-    /// <summary>
-    /// Interaction logic for CoursesView.xaml
-    /// </summary>
-    public partial class CoursesView
+    public partial class CoursesView : UserControl
     {
+        private CoursesViewModel _viewModel;
         public CoursesView()
         {
             InitializeComponent();
+            _viewModel = new CoursesViewModel(new CourseDataProvider());
+            DataContext = _viewModel;
+            Loaded += CoursesView_Loaded;
+        }
+
+        private async void CoursesView_Loaded(object sender, RoutedEventArgs e)
+        {
+            await _viewModel.LoadAsync();
         }
     }
 }

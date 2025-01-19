@@ -1,25 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Courses.WPF.Data;
+using Courses.WPF.ViewModel;
 
 namespace Courses.WPF.View
 {
-    
-    public partial class GroupsView : Window
+
+    public partial class GroupsView : UserControl
     {
+        private GroupsViewModel _viewModel;
         public GroupsView()
         {
             InitializeComponent();
+            _viewModel = new GroupsViewModel(new GroupDataProvider());
+            DataContext = _viewModel;
+            Loaded += GroupsView_Loaded;
+        }
+        private async void GroupsView_Loaded(object sender, RoutedEventArgs e)
+        {
+            await _viewModel.LoadAsync();
+        }
+
+        private void ButtonImport_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.Add(); //implement import method
+        }
+
+        private void ButtonCreate_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.Create();
         }
     }
 }

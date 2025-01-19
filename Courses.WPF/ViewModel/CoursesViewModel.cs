@@ -12,7 +12,7 @@ namespace Courses.WPF.ViewModel
             _courseDataProvider = courseDataProvider;
         }
         public ObservableCollection<Course> Courses { get; } = new();
-
+        public Course? SelectedCourse { get; set; }
         public async Task LoadAsync()
         {
             if (Courses.Any())

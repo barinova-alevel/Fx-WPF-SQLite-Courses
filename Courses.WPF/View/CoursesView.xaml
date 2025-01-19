@@ -21,6 +21,12 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
+            <ListView
+                Grid.Row="1"
+                Margin="10,0,10,10"
+                DisplayMemberPath="Name"
+                ItemsSource="{Binding Courses}"
+                SelectedItem="{Binding SelectedCourse, Mode=TwoWay}" />
         </Grid>
 
         <!--  Students list  -->
