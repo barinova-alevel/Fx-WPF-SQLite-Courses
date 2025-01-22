@@ -21,14 +21,5 @@ namespace Courses.WPF.View
             await _viewModel.LoadAsync();
         }
 
-        private void ButtonImport_Click(object sender, RoutedEventArgs e)
-        {
-            _viewModel.Add(); //implement import method
-        }
-
-        private void ButtonCreate_Click(object sender, RoutedEventArgs e)
-        {
-            _viewModel.Create();
-        }
-    }
+       }
 }

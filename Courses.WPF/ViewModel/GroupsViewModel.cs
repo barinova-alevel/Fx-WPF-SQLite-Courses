@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Courses.WPF.Command;
 using Courses.WPF.Data;
 using Courses.WPF.Model;
 
@@ -12,16 +13,25 @@ namespace Courses.WPF.ViewModel
         public GroupsViewModel(IGroupDataProvider groupDataProvider)
         {
             _groupDataProvider = groupDataProvider;
+            ImportCommand = new DelegateCommand(Import);
+            CreateCommand = new DelegateCommand(Create);
+            DeleteCommand = new DelegateCommand(Delete, CanDelete);
         }
+
         public ObservableCollection<GroupItemViewModel> Groups { get; } = new();
-        public GroupItemViewModel? SelectedGroup { 
+        public GroupItemViewModel? SelectedGroup
+        {
             get => _selectedGroup;
-            set 
-            { 
+            set
+            {
                 _selectedGroup = value;
                 RaisePropertyChanged();
-            } 
+                DeleteCommand.RaiseCanExecuteChanged();
+            }
         }
+        public DelegateCommand ImportCommand { get; }
+        public DelegateCommand CreateCommand { get; }
+        public DelegateCommand DeleteCommand { get; }
 
         public async Task LoadAsync()
         {
@@ -41,19 +51,28 @@ namespace Courses.WPF.ViewModel
             }
         }
 
-        public void Add()
+        public void Import(object? parameter)
         {
             throw new NotImplementedException();
         }
 
-        internal void Create()
+        private void Create(object? parameter)
         {
-            var group = new StudentsGroup { Name = "Group name"};
+            var group = new StudentsGroup { Name = "Group name" };
             var viewModel = new GroupItemViewModel(group);
             Groups.Add(viewModel);
             SelectedGroup = viewModel;
         }
 
-        
+        private void Delete(object? parameter)
+        {
+            if (SelectedGroup is not null)
+            {
+                Groups.Remove(SelectedGroup);
+                SelectedGroup = null;
+            }
+        }
+
+        private bool CanDelete(object? parameter) => SelectedGroup is not null;
     }
 }
