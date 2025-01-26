@@ -12,9 +12,5 @@ namespace Courses.WPF
             InitializeComponent();
         }
 
-        //private void ButtonMenu_Click(object sender, RoutedEventArgs e)
-        //{
-        //    btnMenu.Content = "Course added?";
-        //}
     }
 }

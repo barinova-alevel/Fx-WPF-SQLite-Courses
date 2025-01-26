@@ -1,18 +1,31 @@
 ﻿using System.Collections.ObjectModel;
+using Courses.WPF.Command;
 using Courses.WPF.Data;
 using Courses.WPF.Model;
 
 namespace Courses.WPF.ViewModel
 {
-    public class CoursesViewModel
+    public class CoursesViewModel :ViewModelBase
     {
         private readonly ICourseDataProvider _courseDataProvider;
+        private CourseItemViewModel? _selectedCourse;
         public CoursesViewModel(ICourseDataProvider courseDataProvider)
         {
             _courseDataProvider = courseDataProvider;
         }
-        public ObservableCollection<Course> Courses { get; } = new();
-        public Course? SelectedCourse { get; set; }
+        public ObservableCollection<CourseItemViewModel> Courses { get; } = new();
+        public CourseItemViewModel? SelectedCourse
+        {
+            get => _selectedCourse;
+            set
+            {
+                _selectedCourse = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(IsCourseSelected));
+            }
+        }
+        public bool IsCourseSelected => SelectedCourse is not null;
+
         public async Task LoadAsync()
         {
             if (Courses.Any())
@@ -26,7 +39,7 @@ namespace Courses.WPF.ViewModel
             {
                 foreach (var course in courses)
                 {
-                    Courses.Add(course);   
+                    Courses.Add(new CourseItemViewModel(course));   
                 }
             }
         }

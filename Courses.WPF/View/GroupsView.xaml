@@ -9,6 +9,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
@@ -16,7 +17,7 @@
         </Grid.ColumnDefinitions>
 
         <!--  Groups list  -->
-        <Grid x:Name="groupsList" Background="#777">
+        <Grid Background="#777">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
@@ -36,14 +37,16 @@
             <ListView
                 Grid.Row="1"
                 Margin="10,0,10,10"
-                DisplayMemberPath="GroupName"
                 ItemsSource="{Binding Path=Groups}"
                 SelectedItem="{Binding SelectedGroup, Mode=TwoWay}" />
         </Grid>
 
         <!--  Group detail  -->
 
-        <StackPanel Grid.Column="1" Margin="10">
+        <StackPanel
+            Grid.Column="1"
+            Margin="10"
+            Visibility="{Binding IsGroupSelected, Converter={StaticResource BooleanToVisibilityConv}}">
             <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical">
                 <Grid Margin="10" HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
@@ -71,7 +74,6 @@
                         HorizontalAlignment="Center"
                         Content="Summary" />
                 </Grid>
-
             </StackPanel>
             <Label>Group name:</Label>
             <TextBox Text="{Binding SelectedGroup.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

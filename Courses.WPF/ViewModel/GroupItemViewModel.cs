@@ -17,7 +17,7 @@ namespace Courses.WPF.ViewModel
             set
             {
                 _model.Name = value;
-                RaisePropertyChanged(nameof(Name));
+                RaisePropertyChanged();
             }
         }
         public int CourseId
@@ -26,7 +26,7 @@ namespace Courses.WPF.ViewModel
             set
             {
                 _model.CourseId = value;
-                RaisePropertyChanged(nameof(CourseId));
+                RaisePropertyChanged();
             }
         }
 
@@ -36,7 +36,7 @@ namespace Courses.WPF.ViewModel
             set
             {
                 _model.Teacher = value;
-                RaisePropertyChanged(nameof(Teacher));
+                RaisePropertyChanged();
             }
         }
     }

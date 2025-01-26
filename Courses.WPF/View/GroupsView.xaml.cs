@@ -20,6 +20,5 @@ namespace Courses.WPF.View
         {
             await _viewModel.LoadAsync();
         }
-
-       }
+    }
 }

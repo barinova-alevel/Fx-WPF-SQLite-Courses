@@ -8,7 +8,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid Background="AliceBlue">
+    <Grid Background="{StaticResource TitleBackgroundBrush}">
         <StackPanel
             Grid.Row="1"
             Grid.ColumnSpan="2"
@@ -16,7 +16,7 @@
             Orientation="Horizontal">
             <TextBlock
                 FontSize="30"
-                Foreground="DarkBlue"
+                Foreground="{StaticResource TitleForegroundBrush}"
                 Text="Courses" />
         </StackPanel>
     </Grid>

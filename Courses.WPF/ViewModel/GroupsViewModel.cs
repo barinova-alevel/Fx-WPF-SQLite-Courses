@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Navigation;
 using Courses.WPF.Command;
 using Courses.WPF.Data;
 using Courses.WPF.Model;
@@ -26,9 +27,13 @@ namespace Courses.WPF.ViewModel
             {
                 _selectedGroup = value;
                 RaisePropertyChanged();
+                RaisePropertyChanged(nameof(IsGroupSelected));
                 DeleteCommand.RaiseCanExecuteChanged();
             }
         }
+
+        public bool IsGroupSelected => SelectedGroup is not null;
+
         public DelegateCommand ImportCommand { get; }
         public DelegateCommand CreateCommand { get; }
         public DelegateCommand DeleteCommand { get; }

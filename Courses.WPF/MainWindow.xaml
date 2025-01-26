@@ -6,24 +6,29 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="clr-namespace:Courses.WPF.View"
-    Title="MainWindow"
+    Title="Courses App"
     d:DesignHeight="450"
     d:DesignWidth="800"
     FontSize="20"
     mc:Ignorable="d">
 
     <Grid>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Menu Background="AliceBlue" FontSize="20">
+        <Menu FontSize="20">
             <MenuItem Header="_Menu">
-                <MenuItem Header="_Courses" />
-                <MenuItem Header="_Groups" />
+                <MenuItem
+                    Command="{Binding SelectViewModelCommand}"
+                    CommandParameter="{Binding CoursesViewModel}"
+                    Header="_Courses" />
+                <MenuItem
+                    Command="{Binding SelectViewModelCommand}"
+                    CommandParameter="{Binding GroupsViewModel}"
+                    Header="_Groups" />
                 <MenuItem Header="_Students" />
                 <MenuItem Header="_Teachers" />
             </MenuItem>
@@ -31,8 +36,8 @@
 
         <controls:TitleControl Grid.Row="1" />
 
-        <!--  Courses View  -->
-        <view:CoursesView Grid.Row="2" />
+        <view:GroupsView Grid.Row="2" Margin="145,27,-145,-29" />
+
 
     </Grid>
 </Window>
