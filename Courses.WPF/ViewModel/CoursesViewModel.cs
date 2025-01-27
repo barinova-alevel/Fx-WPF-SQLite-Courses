@@ -26,7 +26,7 @@ namespace Courses.WPF.ViewModel
         }
         public bool IsCourseSelected => SelectedCourse is not null;
 
-        public async Task LoadAsync()
+        public override async Task LoadAsync()
         {
             if (Courses.Any())
             {

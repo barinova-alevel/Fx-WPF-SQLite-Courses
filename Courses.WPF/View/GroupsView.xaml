@@ -9,7 +9,13 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-
+    <UserControl.Resources>
+        <DataTemplate x:Key="GroupDataTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding Name}" />
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
@@ -37,6 +43,7 @@
             <ListView
                 Grid.Row="1"
                 Margin="10,0,10,10"
+                ItemTemplate="{StaticResource GroupDataTemplate}"
                 ItemsSource="{Binding Path=Groups}"
                 SelectedItem="{Binding SelectedGroup, Mode=TwoWay}" />
         </Grid>

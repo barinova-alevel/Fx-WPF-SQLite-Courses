@@ -6,12 +6,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="clr-namespace:Courses.WPF.View"
+    xmlns:viewModel="clr-namespace:Courses.WPF.ViewModel"
     Title="Courses App"
     d:DesignHeight="450"
     d:DesignWidth="800"
     FontSize="20"
     mc:Ignorable="d">
-
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModel:CoursesViewModel}">
+            <view:CoursesView />
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -36,8 +41,7 @@
 
         <controls:TitleControl Grid.Row="1" />
 
-        <view:GroupsView Grid.Row="2" Margin="145,27,-145,-29" />
-
+        <ContentControl Grid.Row="2" Content="{Binding SelectedViewModel}" />
 
     </Grid>
 </Window>

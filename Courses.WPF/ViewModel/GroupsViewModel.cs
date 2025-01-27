@@ -38,7 +38,7 @@ namespace Courses.WPF.ViewModel
         public DelegateCommand CreateCommand { get; }
         public DelegateCommand DeleteCommand { get; }
 
-        public async Task LoadAsync()
+        public async override Task LoadAsync()
         {
             if (Groups.Any())
             {

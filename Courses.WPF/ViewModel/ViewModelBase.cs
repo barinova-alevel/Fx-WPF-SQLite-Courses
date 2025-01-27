@@ -11,5 +11,7 @@ namespace Courses.WPF.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public virtual Task LoadAsync() => Task.CompletedTask;
     }
 }
