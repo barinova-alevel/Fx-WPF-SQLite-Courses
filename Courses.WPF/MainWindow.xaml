@@ -16,6 +16,9 @@
         <DataTemplate DataType="{x:Type viewModel:CoursesViewModel}">
             <view:CoursesView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:GroupsViewModel}">
+            <view:GroupsView />
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>

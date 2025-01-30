@@ -1,14 +1,19 @@
-﻿namespace Courses.WPF.ViewModel
+﻿using Courses.WPF.Command;
+
+namespace Courses.WPF.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private readonly CoursesViewModel _coursesViewModel;
+        
         private ViewModelBase? _selectedViewModel;
-        public MainViewModel(CoursesViewModel coursesViewModel)
+        public MainViewModel(CoursesViewModel coursesViewModel, GroupsViewModel groupsViewModel) //add other view models as parameters here 
         {
-            _coursesViewModel = coursesViewModel;
-            SelectedViewModel = _coursesViewModel;
+            CoursesViewModel = coursesViewModel;
+            GroupsViewModel = groupsViewModel;
+            SelectedViewModel = CoursesViewModel;
+            SelectViewModelCommand = new DelegateCommand(SelectViewModel);
         }
+
         public ViewModelBase? SelectedViewModel
 		{
 			get => _selectedViewModel;
@@ -17,6 +22,9 @@
 				RaisePropertyChanged();
 			}
 		}
+        public CoursesViewModel CoursesViewModel { get; }
+        public GroupsViewModel GroupsViewModel { get; }
+        public DelegateCommand SelectViewModelCommand { get; }
         public async override Task LoadAsync() 
         { 
             if (SelectedViewModel is not null) 
@@ -24,5 +32,11 @@
                 await SelectedViewModel.LoadAsync();
             }
         }
-	}
+
+        private async void SelectViewModel(object? parameter)
+        {
+            SelectedViewModel = parameter as ViewModelBase;
+            await LoadAsync();
+        }
+    }
 }

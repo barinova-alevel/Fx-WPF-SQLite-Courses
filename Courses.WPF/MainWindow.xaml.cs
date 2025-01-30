@@ -10,8 +10,9 @@ namespace Courses.WPF
         public MainWindow()
         {
             InitializeComponent();
-            _viewModel = new MainViewModel(new CoursesViewModel(new CourseDataProvider()));
-           //_viewModel = new MainViewModel(new GroupsViewModel(new GroupDataProvider()));
+            _viewModel = new MainViewModel(
+                new CoursesViewModel(new CourseDataProvider()),
+                new GroupsViewModel(new GroupDataProvider()));
             DataContext = _viewModel;
             Loaded += MainWindow_Loaded;
         }
