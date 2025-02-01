@@ -7,12 +7,10 @@ namespace Courses.WPF
     public partial class MainWindow : Window
     {
         private readonly MainViewModel _viewModel;
-        public MainWindow()
+        public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();
-            _viewModel = new MainViewModel(
-                new CoursesViewModel(new CourseDataProvider()),
-                new GroupsViewModel(new GroupDataProvider()));
+            _viewModel = viewModel;
             DataContext = _viewModel;
             Loaded += MainWindow_Loaded;
         }

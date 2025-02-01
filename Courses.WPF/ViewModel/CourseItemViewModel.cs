@@ -12,7 +12,7 @@ namespace Courses.WPF.ViewModel
         }
         public int CourseId => _model.CourseId;
 
-        public string? FirstName
+        public string? Name
         {
             get => _model.Name;
             set

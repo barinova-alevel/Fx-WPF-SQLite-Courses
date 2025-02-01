@@ -17,6 +17,7 @@
 
         <!--  Courses Groups Tree  -->
         <Grid x:Name="coursesTree" Background="#779">
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
