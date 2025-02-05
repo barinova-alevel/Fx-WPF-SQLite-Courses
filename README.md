@@ -13,29 +13,29 @@ Enter ".help" for usage hints.>
 
 ***To create tables:
 
-CREATE TABLE courses (CourseId INTEGER PRIMARY KEY,
+CREATE TABLE Courses (CourseId INTEGER PRIMARY KEY,
                                        Name TEXT, Description TEXT);
 
 
-CREATE TABLE studentsGroups (Id INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE StudentsGroups (Id INTEGER PRIMARY KEY AUTOINCREMENT,
                                                     CourseId INTEGER NOT NULL,
                                                                      Name TEXT, TeacherId INTEGER,
-                             FOREIGN KEY (CourseId) REFERENCES courses(CourseId),
-                             FOREIGN KEY (TeacherId) REFERENCES teachers(TeacherId));
+                             FOREIGN KEY (CourseId) REFERENCES Courses(CourseId),
+                             FOREIGN KEY (TeacherId) REFERENCES Teachers(TeacherId));
 
 
-CREATE TABLE students (StudentId INTEGER PRIMARY KEY,
+CREATE TABLE Students (StudentId INTEGER PRIMARY KEY,
                                          GroupId INTEGER NOT NULL,
                                                          FirstName TEXT, LastName TEXT,
-                       FOREIGN KEY (GroupId) REFERENCES studentsGroups (Id));
+                       FOREIGN KEY (GroupId) REFERENCES StudentsGroups (Id));
 
 
-CREATE TABLE teachers (TeacherId INTEGER PRIMARY KEY,
+CREATE TABLE Teachers (TeacherId INTEGER PRIMARY KEY,
                                          FirstName TEXT, LastName TEXT);
 
 ***To insert data:
 
-INSERT INTO courses (Name, Description)
+INSERT INTO Courses (Name, Description)
 VALUES ('Business','Field of study that deals with the principles of business, management, and economics. It combines elements of accountancy, finance, marketing, organizational studies, human resource management, and operations.'),
        ('Sales' ,'Sales course covers a wide range of topics essential for developing effective selling skills. These include understanding the sales process, prospecting and lead generation, and building customer relationships.'),
        ('Marketing' ,'An examination of managerial decision-making and problem-solving using the marketing mix and the activities it entails such as selling, advertising, pricing, consumer behavior, marketing research and channels of distribution.'),
@@ -44,7 +44,7 @@ VALUES ('Business','Field of study that deals with the principles of business, m
        ('Arts' ,'Combines a mixture of theoretical and practical course elements to nurture students in developing their own artistic work.');
 
 
-INSERT INTO studentsGroups (Name, CourseId, TeacherId)
+INSERT INTO StudentsGroups (Name, CourseId, TeacherId)
 VALUES ('BR-01',1, 1) ,
        ('BR-02',1, 2) ,
        ('SR-01',2, 3) ,
@@ -56,14 +56,14 @@ VALUES ('BR-01',1, 1) ,
        ('M-02',3, 1);
 
 
-INSERT INTO teachers (FirstName, LastName)
+INSERT INTO Teachers (FirstName, LastName)
 VALUES ('John', 'Smith'),
        ('Emily', 'Johnson'),
        ('Michael', 'Brown'),
        ('Sarah', 'Davis');
 
 
-INSERT INTO students (GroupId, FirstName, LastName)
+INSERT INTO Students (GroupId, FirstName, LastName)
 VALUES (1, 'Elijah', 'Hall') ,
        (1, 'Ethan', 'Anderson') ,
        (1, 'Olivia', 'Brown') ,
@@ -140,13 +140,13 @@ VALUES (1, 'Elijah', 'Hall') ,
 	   
 ***To verify the insertion:
 SELECT *
-FROM courses;
+FROM Courses;
 
 SELECT *
-FROM studentsGroups;
+FROM StudentsGroups;
 
 SELECT *
-FROM teachers;
+FROM Teachers;
 
 SELECT *
-FROM students;
+FROM Students;

@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Courses.WPF.Data;
 using Courses.WPF.ViewModel;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Courses.WPF
@@ -26,6 +27,12 @@ namespace Courses.WPF
 
             services.AddTransient<ICourseDataProvider, CourseDataProvider>();
             services.AddTransient<IGroupDataProvider, GroupDataProvider>();
+
+            //using (AppDbContext context = new AppDbContext())
+            //{
+            //    services.AddDbContext<>();
+            //}
+                
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -33,7 +40,7 @@ namespace Courses.WPF
             base.OnStartup(e);
 
             var mainVindow = _serviceProvider.GetService<MainWindow>();
-                mainVindow?.Show();
+            mainVindow?.Show();
         }
     }
 
