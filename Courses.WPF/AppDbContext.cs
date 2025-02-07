@@ -16,16 +16,9 @@ namespace Courses.WPF
         public DbSet<StudentsGroup> StudentsGroups { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
 
-        //public AppDbContext(DbContextOptions<AppDbContext> options) : base()
-        //{
-
-        //}
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base()
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlite("Data Source=courseswpf.db");
-            }
+
         }
     }
 }

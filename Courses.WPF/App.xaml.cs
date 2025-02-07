@@ -19,29 +19,25 @@ namespace Courses.WPF
 
         private void ConfigureServices(ServiceCollection services)
         {
-            services.AddTransient<MainWindow>();
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlite("Data Source=courseswpf.db"));
 
-            services.AddTransient<MainViewModel>();
-            services.AddTransient<CoursesViewModel>();
-            services.AddTransient<GroupsViewModel>();
+            services.AddScoped<MainWindow>();
 
-            services.AddTransient<ICourseDataProvider, CourseDataProvider>();
-            services.AddTransient<IGroupDataProvider, GroupDataProvider>();
+            services.AddScoped<MainViewModel>();
+            services.AddScoped<CoursesViewModel>();
+            services.AddScoped<GroupsViewModel>();
 
-            //using (AppDbContext context = new AppDbContext())
-            //{
-            //    services.AddDbContext<>();
-            //}
-                
+            services.AddScoped<ICourseDataProvider, CourseDataProvider>();
+            services.AddScoped<IGroupDataProvider, GroupDataProvider>();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
-            var mainVindow = _serviceProvider.GetService<MainWindow>();
-            mainVindow?.Show();
+            var mainWindow = _serviceProvider.GetService<MainWindow>();
+            mainWindow?.Show();
         }
     }
-
 }

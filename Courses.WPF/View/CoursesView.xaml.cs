@@ -20,11 +20,12 @@ namespace Courses.WPF.View
     public partial class CoursesView : UserControl
     {
         private CoursesViewModel _viewModel;
-        AppDbContext context = new AppDbContext();
-        public CoursesView()
+        //AppDbContext context = new AppDbContext();
+        public CoursesView(CoursesViewModel viewModel)
         {
             InitializeComponent();
-            _viewModel = new CoursesViewModel(new CourseDataProvider(context)); //?
+            //_viewModel = new CoursesViewModel(new CourseDataProvider(context)); //?
+            _viewModel = viewModel;
             DataContext = _viewModel;
             Loaded += CoursesView_Loaded;
         }

@@ -18,10 +18,13 @@ namespace Courses.WPF.Data
         }
         public async Task<IEnumerable<Course>?> GetAllAsync()
         {
-            using (var context = new AppDbContext())
-            {
-                return context.Courses.ToList();
-            }
+            //return _context.Courses.ToList();
+            return await _context.Courses.ToListAsync();
+
+            //using (var context = new AppDbContext())
+            //{
+            //    return context.Courses.ToList();
+            //}
 
             ////access db here
             //await Task.Delay(100); //to be deleted
