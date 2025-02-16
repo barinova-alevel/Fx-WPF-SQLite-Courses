@@ -18,20 +18,13 @@ namespace Courses.WPF.Data
         }
         public async Task<IEnumerable<Course>?> GetAllAsync()
         {
-            //return _context.Courses.ToList();
+            //SQLite Exception here: no such table 'Courses'
             return await _context.Courses.ToListAsync();
 
             //using (var context = new AppDbContext())
             //{
             //    return context.Courses.ToList();
             //}
-
-            ////access db here
-            //await Task.Delay(100); //to be deleted
-            //return new List<Course>
-            //{
-            //    new Course{CourseId = 1, Name="11name", Description="111" }
-            //};
         }
     }
 }

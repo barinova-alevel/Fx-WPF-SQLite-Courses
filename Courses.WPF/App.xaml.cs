@@ -4,6 +4,7 @@ using Courses.WPF.View;
 using Courses.WPF.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Courses.WPF
 {
@@ -21,16 +22,14 @@ namespace Courses.WPF
         private void ConfigureServices(ServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlite("Data Source=courseswpf.db"));
-
+               options.UseSqlite("Data Source=courseswpf.db"));
+             
             //services.AddScoped<MainWindow>();
             services.AddSingleton<MainWindow>();
 
             services.AddScoped<MainViewModel>();
             services.AddScoped<CoursesViewModel>();
             services.AddScoped<GroupsViewModel>();
-
-            //services.AddSingleton<CoursesView>(); //?
 
             services.AddScoped<ICourseDataProvider, CourseDataProvider>();
             services.AddScoped<IGroupDataProvider, GroupDataProvider>();

@@ -7,6 +7,7 @@ namespace Courses.WPF.ViewModel
         
         private ViewModelBase? _selectedViewModel;
         public MainViewModel(CoursesViewModel coursesViewModel, GroupsViewModel groupsViewModel) //add other view models as parameters here 
+        
         {
             CoursesViewModel = coursesViewModel;
             GroupsViewModel = groupsViewModel;

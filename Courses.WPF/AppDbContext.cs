@@ -20,5 +20,9 @@ namespace Courses.WPF
         {
 
         }
+
+        //the following strings are already used in App.ConfigureServices(), but without those strings got exception ('No database provider has been configured for this DbContext) in CourseDataProvider Task<IEnumerable<Course>?> GetAllAsync() 
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+    => options.UseSqlite("DataSource=app.db");
     }
 }

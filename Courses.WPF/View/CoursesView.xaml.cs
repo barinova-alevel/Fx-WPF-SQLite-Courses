@@ -30,13 +30,14 @@ namespace Courses.WPF.View
             Loaded += CoursesView_Loaded;
         }
 
-        //public CoursesView()
-        //{
-        //    InitializeComponent();
-        //   // _viewModel = viewModel;
-        //    DataContext = _viewModel;
-        //    Loaded += CoursesView_Loaded;
-        //}
+        //without following constructor got exception in App.mainWindow?.Show();
+        public CoursesView()
+        {
+            InitializeComponent();
+            //_viewModel = viewModel;
+            //DataContext = _viewModel;
+            //Loaded += CoursesView_Loaded;
+        }
 
         private async void CoursesView_Loaded(object sender, RoutedEventArgs e)
         {
