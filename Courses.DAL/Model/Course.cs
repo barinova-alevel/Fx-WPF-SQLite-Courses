@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Courses.WPF.Model
+namespace Courses.DAL.Model
 {
     public class Course
     {

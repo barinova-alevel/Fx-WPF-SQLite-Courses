@@ -1,4 +1,4 @@
-﻿namespace Courses.WPF.Model
+﻿namespace Courses.DAL.Model
 {
     public class StudentsGroup
     {

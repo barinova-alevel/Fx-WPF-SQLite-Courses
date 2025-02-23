@@ -1,11 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,17 +11,5 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.1" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Courses.DAL\Courses.DAL.csproj" />
-  </ItemGroup>
-
-  <!--<ItemGroup>
-    <None Remove="Images\add.png" />
-  </ItemGroup>-->
-
-  <!--<ItemGroup>
-    <Resource Include="Images\add.png" />
-  </ItemGroup>-->
 
 </Project>

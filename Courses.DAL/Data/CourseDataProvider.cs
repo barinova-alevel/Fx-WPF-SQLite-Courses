@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Courses.WPF.Model;
+using Courses.DAL;
+using Courses.DAL.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace Courses.WPF.Data
+namespace Courses.DAL.Data
 {
     public class CourseDataProvider : ICourseDataProvider
     {

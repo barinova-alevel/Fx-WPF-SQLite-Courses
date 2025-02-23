@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Courses.WPF", "Courses.WPF\Courses.WPF.csproj", "{EC80E9B6-0C87-4C8B-A0A6-65D74A86315D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Courses.WPF", "Courses.WPF\Courses.WPF.csproj", "{EC80E9B6-0C87-4C8B-A0A6-65D74A86315D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Courses.DAL", "Courses.DAL\Courses.DAL.csproj", "{2014E11D-BE9A-4897-9F12-811890962744}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Courses.UnitTests", "Courses.UnitTests\Courses.UnitTests.csproj", "{4CC112C6-8188-4C90-83B3-847C32E91766}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{EC80E9B6-0C87-4C8B-A0A6-65D74A86315D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC80E9B6-0C87-4C8B-A0A6-65D74A86315D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC80E9B6-0C87-4C8B-A0A6-65D74A86315D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2014E11D-BE9A-4897-9F12-811890962744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2014E11D-BE9A-4897-9F12-811890962744}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2014E11D-BE9A-4897-9F12-811890962744}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2014E11D-BE9A-4897-9F12-811890962744}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CC112C6-8188-4C90-83B3-847C32E91766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CC112C6-8188-4C90-83B3-847C32E91766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CC112C6-8188-4C90-83B3-847C32E91766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CC112C6-8188-4C90-83B3-847C32E91766}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

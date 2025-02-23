@@ -1,8 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Navigation;
+using Courses.DAL.Data;
+using Courses.DAL.Model;
 using Courses.WPF.Command;
-using Courses.WPF.Data;
-using Courses.WPF.Model;
 
 namespace Courses.WPF.ViewModel
 {

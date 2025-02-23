@@ -1,7 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using Courses.WPF.Command;
-using Courses.WPF.Data;
-using Courses.WPF.Model;
+using Courses.DAL.Data;
 
 namespace Courses.WPF.ViewModel
 {

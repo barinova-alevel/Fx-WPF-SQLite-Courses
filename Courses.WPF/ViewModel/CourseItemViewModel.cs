@@ -1,4 +1,4 @@
-﻿using Courses.WPF.Model;
+﻿using Courses.DAL.Model;
 
 namespace Courses.WPF.ViewModel
 {

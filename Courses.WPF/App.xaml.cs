@@ -1,10 +1,7 @@
 ﻿using System.Windows;
-using Courses.WPF.Data;
-using Courses.WPF.View;
+using Courses.DAL.Data;
 using Courses.WPF.ViewModel;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace Courses.WPF
 {
@@ -21,8 +18,9 @@ namespace Courses.WPF
 
         private void ConfigureServices(ServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(options =>
-               options.UseSqlite("Data Source=courseswpf.db"));
+            //services.AddDbContext<AppDbContext>(options =>
+               //options.UseSqlite("Data Source=courseswpf.db"));
+               //options.UseSqlite("Data Source=C:\\Users\\Oksana\\courseswpf.db"));
              
             //services.AddScoped<MainWindow>();
             services.AddSingleton<MainWindow>();

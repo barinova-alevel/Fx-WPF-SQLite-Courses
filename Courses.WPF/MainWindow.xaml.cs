@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Courses.WPF.Data;
 using Courses.WPF.ViewModel;
 
 namespace Courses.WPF
