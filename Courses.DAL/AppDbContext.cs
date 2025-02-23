@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Courses.WPF.Model;
-using Microsoft.Data.Sqlite;
+﻿using Courses.DAL.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace Courses.WPF
+namespace Courses.DAL
 {
     public class AppDbContext : DbContext
     {
@@ -23,6 +17,6 @@ namespace Courses.WPF
 
         //the following strings are already used in App.ConfigureServices(), but without those strings got exception ('No database provider has been configured for this DbContext) in CourseDataProvider Task<IEnumerable<Course>?> GetAllAsync() 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-    => options.UseSqlite("DataSource=app.db");
+    => options.UseSqlite("Data Source=C:\\Users\\Oksana\\courseswpf.db");
     }
 }

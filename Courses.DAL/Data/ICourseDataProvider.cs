@@ -1,6 +1,6 @@
-﻿using Courses.WPF.Model;
+﻿using Courses.DAL.Model;
 
-namespace Courses.WPF.Data
+namespace Courses.DAL.Data
 {
     public interface ICourseDataProvider
     {
