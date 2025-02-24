@@ -1,17 +1,19 @@
 ﻿using Courses.DAL.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Courses.DAL.Data
 {
     public class GroupDataProvider : IGroupDataProvider
     {
+        private readonly AppDbContext _context;
+
+        public GroupDataProvider(AppDbContext context)
+        {
+            _context = context;
+        }
         public async Task<IEnumerable<StudentsGroup>?> GetAllAsync()
         {
-            //access db here
-            await Task.Delay(100); //to be deleted
-            return new List<StudentsGroup>
-            {
-                new StudentsGroup{Id=1, CourseId = 1, Name="Group 1" }
-            };
+            return await _context.StudentsGroups.ToListAsync();
         }
     }
 }
