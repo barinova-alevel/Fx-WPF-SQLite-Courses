@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Courses.DAL;
 using Courses.DAL.Data;
 using Courses.WPF.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,11 +19,7 @@ namespace Courses.WPF
 
         private void ConfigureServices(ServiceCollection services)
         {
-            //services.AddDbContext<AppDbContext>(options =>
-               //options.UseSqlite("Data Source=courseswpf.db"));
-               //options.UseSqlite("Data Source=C:\\Users\\Oksana\\courseswpf.db"));
-             
-            //services.AddScoped<MainWindow>();
+            services.AddDbContext<AppDbContext>();
             services.AddSingleton<MainWindow>();
 
             services.AddScoped<MainViewModel>();
@@ -38,12 +35,6 @@ namespace Courses.WPF
             base.OnStartup(e);
 
             var mainWindow = _serviceProvider.GetService<MainWindow>();
-            //temporary:
-            if (mainWindow == null)
-            {
-                MessageBox.Show("Failed to resolve MainWindow. Check your service registrations.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
             mainWindow?.Show();
         }
     }
