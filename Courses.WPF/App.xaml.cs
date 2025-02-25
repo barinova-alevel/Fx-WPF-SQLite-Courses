@@ -1,14 +1,43 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
+using Courses.DAL;
+using Courses.DAL.Data;
+using Courses.WPF.ViewModel;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Courses.WPF
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
-    }
+        private readonly ServiceProvider _serviceProvider;
 
+        public App()
+        {
+            ServiceCollection services = new ServiceCollection();
+            ConfigureServices(services);
+            _serviceProvider = services.BuildServiceProvider();
+        }
+
+        private void ConfigureServices(ServiceCollection services)
+        {
+            services.AddDbContext<AppDbContext>();
+            services.AddSingleton<MainWindow>();
+
+            services.AddScoped<MainViewModel>();
+            services.AddScoped<CoursesViewModel>();
+            services.AddScoped<GroupsViewModel>();
+            services.AddScoped<StudentsViewModel>();
+
+            services.AddScoped<ICourseDataProvider, CourseDataProvider>();
+            services.AddScoped<IGroupDataProvider, GroupDataProvider>();
+            services.AddScoped<IStudentDataProvider, StudentDataProvider>();
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            var mainWindow = _serviceProvider.GetService<MainWindow>();
+            mainWindow?.Show();
+        }
+    }
 }
