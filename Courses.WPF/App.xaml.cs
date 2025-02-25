@@ -26,10 +26,12 @@ namespace Courses.WPF
             services.AddScoped<CoursesViewModel>();
             services.AddScoped<GroupsViewModel>();
             services.AddScoped<StudentsViewModel>();
+            services.AddScoped<TeachersViewModel>();
 
             services.AddScoped<ICourseDataProvider, CourseDataProvider>();
             services.AddScoped<IGroupDataProvider, GroupDataProvider>();
             services.AddScoped<IStudentDataProvider, StudentDataProvider>();
+            services.AddScoped<ITeacherDataProvider, TeacherDataProvider>();
         }
 
         protected override void OnStartup(StartupEventArgs e)
