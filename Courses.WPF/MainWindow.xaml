@@ -19,6 +19,12 @@
         <DataTemplate DataType="{x:Type viewModel:GroupsViewModel}">
             <view:GroupsView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:StudentsViewModel}">
+            <view:GroupsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:TeachersViewModel}">
+            <view:GroupsView />
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
