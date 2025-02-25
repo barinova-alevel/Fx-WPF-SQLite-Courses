@@ -1,4 +1,6 @@
 ﻿using Courses.DAL.Data;
+using Courses.DAL.Model;
+using Courses.WPF.Command;
 using System.Collections.ObjectModel;
 
 namespace Courses.WPF.ViewModel
@@ -10,6 +12,8 @@ namespace Courses.WPF.ViewModel
         public TeachersViewModel(ITeacherDataProvider teacherDataProvider)
         {
             _teacherDataProvider = teacherDataProvider;
+            CreateCommand = new DelegateCommand(Create);
+            DeleteCommand = new DelegateCommand(Delete, CanDelete);
         }
         public ObservableCollection<TeacherItemViewModel> Teachers { get; } = new();
         public TeacherItemViewModel? SelectedTeacher
@@ -20,10 +24,13 @@ namespace Courses.WPF.ViewModel
                 _selectedTeacher = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsTeacherSelected));
+                DeleteCommand.RaiseCanExecuteChanged();
             }
         }
         public bool IsTeacherSelected => SelectedTeacher is not null;
 
+        public DelegateCommand CreateCommand { get; }
+        public DelegateCommand DeleteCommand { get; }
         public override async Task LoadAsync()
         {
             if (Teachers.Any())
@@ -41,5 +48,24 @@ namespace Courses.WPF.ViewModel
                 }
             }
         }
+
+        private void Create(object? parameter)
+        {
+            var teacher = new Teacher { FirstName = "Name" };
+            var viewModel = new TeacherItemViewModel(teacher);
+            Teachers.Add(viewModel);
+            SelectedTeacher = viewModel;
+        }
+
+        private void Delete(object? parameter)
+        {
+            if (SelectedTeacher is not null)
+            {
+                Teachers.Remove(SelectedTeacher);
+                SelectedTeacher = null;
+            }
+        }
+
+        private bool CanDelete(object? parameter) => SelectedTeacher is not null;
     }
 }

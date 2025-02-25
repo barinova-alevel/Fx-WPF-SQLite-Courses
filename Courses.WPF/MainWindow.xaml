@@ -23,7 +23,7 @@
             <view:GroupsView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:TeachersViewModel}">
-            <view:GroupsView />
+            <view:TeachersView />
         </DataTemplate>
     </Window.Resources>
     <Grid>
@@ -44,7 +44,10 @@
                     CommandParameter="{Binding GroupsViewModel}"
                     Header="_Groups" />
                 <MenuItem Header="_Students" />
-                <MenuItem Header="_Teachers" />
+                <MenuItem
+                    Command="{Binding SelectViewModelCommand}"
+                    CommandParameter="{Binding TeachersViewModel}"
+                    Header="_Teachers" />
             </MenuItem>
         </Menu>
 
