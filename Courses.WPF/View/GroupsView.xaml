@@ -29,6 +29,12 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
+                <Label
+                    Margin="10"
+                    FontSize="24"
+                    Foreground="AntiqueWhite">
+                    Groups
+                </Label>
                 <Button
                     Width="75"
                     Margin="10"

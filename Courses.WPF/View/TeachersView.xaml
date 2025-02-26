@@ -30,6 +30,12 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
+                <Label
+                    Margin="10"
+                    FontSize="24"
+                    Foreground="AntiqueWhite">
+                    Teachers
+                </Label>
                 <Button
                     Width="75"
                     Margin="10"
@@ -55,9 +61,9 @@
             Margin="10"
             Visibility="{Binding IsTeacherSelected, Converter={StaticResource BooleanToVisibilityConv}}">
             <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical" />
-            <Label>Teacher's first name:</Label>
+            <Label>Teacher's First Name:</Label>
             <TextBox Text="{Binding SelectedTeacher.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Label>Teacher's last name:</Label>
+            <Label>Teacher's Last Name:</Label>
             <TextBox Text="{Binding SelectedTeacher.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
     </Grid>
