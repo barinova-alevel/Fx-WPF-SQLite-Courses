@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Courses.DAL.Data;
+using Courses.DAL.Model;
 
 namespace Courses.WPF.ViewModel
 {
@@ -41,5 +42,13 @@ namespace Courses.WPF.ViewModel
                 }
             }
         }
+
+        //public async Task LoadCoursesWithGroups()
+        //{
+        //    var courses = await _courseDataProvider.GetAllAsync();
+        //    var courses = context.Courses.Include(c => c.Groups).ToList();
+        //    Courses = new ObservableCollection<Course>(courses);
+
+        //}
     }
 }

@@ -11,9 +11,9 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <DataTemplate x:Key="TeacherDataTemplate">
-            <StackPanel>
+            <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding FirstName}" />
-                <TextBlock Text="{Binding LastName}" />
+                <TextBlock Margin="5,0,0,0" Text="{Binding LastName}" />
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
