@@ -10,6 +10,6 @@ namespace Courses.DAL.Model
         public int CourseId { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
-        public List<StudentsGroup>? StudentsGroups { get; set;}
+       public List<StudentsGroup>? StudentsGroups { get; set;}
     }
 }

@@ -17,15 +17,27 @@ namespace Courses.DAL.Data
             //return await _context.Courses
             //            .Include(c => c.StudentsGroups)
             //            .ToListAsync();
-            return await _context.Courses
-                         .Select(c => new Course
-                         {
-                             CourseId = c.CourseId,
-                             Name = c.Name,
-                             Description = c.Description,
-                             StudentsGroups = c.StudentsGroups != null ? new List<StudentsGroup>(c.StudentsGroups) : null
-                         })
-                         .ToListAsync();
+            //return await _context.Courses
+            //             .Select(c => new Course
+            //             {
+            //                 CourseId = c.CourseId,
+            //                 Name = c.Name,
+            //                 Description = c.Description,
+            //                // StudentsGroups = c.StudentsGroups != null ? new List<StudentsGroup>(c.StudentsGroups) : null
+            //             })
+            //             .ToListAsync();
+            return  _context.Courses
+                .AsEnumerable()
+                .Select(c => new Course
+                {
+                    CourseId = c.CourseId,
+                    Name = c.Name,
+                    Description = c.Description,
+                    StudentsGroups = c.StudentsGroups != null
+            ? new List<StudentsGroup>(c.StudentsGroups)
+            : null
+                });
+    //.ToListAsync();
         }
     }
 }
