@@ -11,10 +11,10 @@ namespace Courses.DAL.Model
         public int CourseId { get; set; }
         public string? Name { get; set; }
         public Teacher? Teacher { get; set; }
-        public List<Student>? Students { get; set; }
+        //public List<Student>? Students { get; set; }
 
-        [ForeignKey("CourseId")]
-        public Course? Course { get; set; }
+        //[ForeignKey("CourseId")]
+        //public Course? Course { get; set; }
 
     }
 }

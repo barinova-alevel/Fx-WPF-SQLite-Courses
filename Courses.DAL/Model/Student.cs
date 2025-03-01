@@ -12,7 +12,7 @@ namespace Courses.DAL.Model
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
 
-        [ForeignKey("GroupId")]
-        public Group? Group { get; set; }
+        //[ForeignKey("GroupId")]
+        //public Group? Group { get; set; }
     }
 }
