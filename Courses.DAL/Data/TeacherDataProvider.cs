@@ -1,13 +1,13 @@
-﻿using Courses.DAL.Model;
+﻿using Courses.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Courses.DAL.Data
 {
     public class TeacherDataProvider : ITeacherDataProvider
     {
-        private readonly AppDbContext _context;
+        private readonly CourseswpfContext _context;
 
-        public TeacherDataProvider(AppDbContext context)
+        public TeacherDataProvider(CourseswpfContext context)
         {
             _context = context;
         }

@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Courses.DAL;
 using Courses.DAL.Data;
+using Courses.DAL.Models;
 using Courses.WPF.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,7 +20,7 @@ namespace Courses.WPF
 
         private void ConfigureServices(ServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>();
+            services.AddDbContext<CourseswpfContext>();
             services.AddSingleton<MainWindow>();
 
             services.AddScoped<MainViewModel>();

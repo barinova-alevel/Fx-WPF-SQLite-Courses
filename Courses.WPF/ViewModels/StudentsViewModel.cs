@@ -1,5 +1,5 @@
 ﻿using Courses.DAL.Data;
-using Courses.DAL.Model;
+using Courses.DAL.Models;
 using Courses.WPF.Command;
 using System.Collections.ObjectModel;
 
