@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Courses.DAL;
 using Courses.DAL.Data;
+using Courses.DAL.Models;
 using Courses.WPF.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,17 +20,19 @@ namespace Courses.WPF
 
         private void ConfigureServices(ServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>();
+            services.AddDbContext<CourseswpfContext>();
             services.AddSingleton<MainWindow>();
 
             services.AddScoped<MainViewModel>();
             services.AddScoped<CoursesViewModel>();
             services.AddScoped<GroupsViewModel>();
             services.AddScoped<StudentsViewModel>();
+            services.AddScoped<TeachersViewModel>();
 
             services.AddScoped<ICourseDataProvider, CourseDataProvider>();
             services.AddScoped<IGroupDataProvider, GroupDataProvider>();
             services.AddScoped<IStudentDataProvider, StudentDataProvider>();
+            services.AddScoped<ITeacherDataProvider, TeacherDataProvider>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

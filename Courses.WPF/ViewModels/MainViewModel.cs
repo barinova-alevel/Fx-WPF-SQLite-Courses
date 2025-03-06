@@ -9,12 +9,14 @@ namespace Courses.WPF.ViewModel
         public MainViewModel(
               CoursesViewModel coursesViewModel,
             GroupsViewModel groupsViewModel,
-            StudentsViewModel studentsViewModel) //add other view models as parameters here 
+            StudentsViewModel studentsViewModel,
+            TeachersViewModel teachersViewModel)
 
         {
             CoursesViewModel = coursesViewModel;
             GroupsViewModel = groupsViewModel;
             StudentsViewModel = studentsViewModel;
+            TeachersViewModel = teachersViewModel;
             SelectedViewModel = CoursesViewModel;
             SelectViewModelCommand = new DelegateCommand(SelectViewModel);
         }
@@ -31,6 +33,7 @@ namespace Courses.WPF.ViewModel
         public CoursesViewModel CoursesViewModel { get; }
         public GroupsViewModel GroupsViewModel { get; }
         public StudentsViewModel StudentsViewModel { get; }
+        public TeachersViewModel TeachersViewModel { get; }
         public DelegateCommand SelectViewModelCommand { get; }
         public async override Task LoadAsync()
         {

@@ -8,6 +8,7 @@
     xmlns:view="clr-namespace:Courses.WPF.View"
     xmlns:viewModel="clr-namespace:Courses.WPF.ViewModel"
     Title="Courses App"
+    d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     FontSize="20"
@@ -20,10 +21,10 @@
             <view:GroupsView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:StudentsViewModel}">
-            <view:GroupsView />
+            <view:StudentsView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:TeachersViewModel}">
-            <view:GroupsView />
+            <view:TeachersView />
         </DataTemplate>
     </Window.Resources>
     <Grid>
@@ -43,8 +44,14 @@
                     Command="{Binding SelectViewModelCommand}"
                     CommandParameter="{Binding GroupsViewModel}"
                     Header="_Groups" />
-                <MenuItem Header="_Students" />
-                <MenuItem Header="_Teachers" />
+                <MenuItem
+                    Command="{Binding SelectViewModelCommand}"
+                    CommandParameter="{Binding StudentsViewModel}"
+                    Header="_Students" />
+                <MenuItem
+                    Command="{Binding SelectViewModelCommand}"
+                    CommandParameter="{Binding TeachersViewModel}"
+                    Header="_Teachers" />
             </MenuItem>
         </Menu>
 

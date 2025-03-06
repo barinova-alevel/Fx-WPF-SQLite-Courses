@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Courses.WPF", "Courses.WPF\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Courses.DAL", "Courses.DAL\Courses.DAL.csproj", "{2014E11D-BE9A-4897-9F12-811890962744}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Courses.UnitTests", "Courses.UnitTests\Courses.UnitTests.csproj", "{4CC112C6-8188-4C90-83B3-847C32E91766}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{2014E11D-BE9A-4897-9F12-811890962744}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2014E11D-BE9A-4897-9F12-811890962744}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2014E11D-BE9A-4897-9F12-811890962744}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4CC112C6-8188-4C90-83B3-847C32E91766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4CC112C6-8188-4C90-83B3-847C32E91766}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4CC112C6-8188-4C90-83B3-847C32E91766}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4CC112C6-8188-4C90-83B3-847C32E91766}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

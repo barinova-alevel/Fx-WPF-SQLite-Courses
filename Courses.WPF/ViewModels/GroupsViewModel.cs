@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Courses.DAL.Data;
-using Courses.DAL.Model;
+using Courses.DAL.Models;
 using Courses.WPF.Command;
 
 namespace Courses.WPF.ViewModel
@@ -9,6 +9,7 @@ namespace Courses.WPF.ViewModel
     {
         private readonly IGroupDataProvider _groupDataProvider;
         private GroupItemViewModel? _selectedGroup;
+        private TeacherItemViewModel? _selectedTeacher;
 
         public GroupsViewModel(IGroupDataProvider groupDataProvider)
         {
@@ -19,6 +20,7 @@ namespace Courses.WPF.ViewModel
         }
 
         public ObservableCollection<GroupItemViewModel> Groups { get; } = new();
+        public ObservableCollection<TeacherItemViewModel> Teachers { get; } = new();
         public GroupItemViewModel? SelectedGroup
         {
             get => _selectedGroup;
@@ -28,6 +30,17 @@ namespace Courses.WPF.ViewModel
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsGroupSelected));
                 DeleteCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public TeacherItemViewModel? SelectedTeacher
+        {
+            get => _selectedTeacher;
+            set
+            {
+                _selectedTeacher = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(IsGroupSelected));
             }
         }
 

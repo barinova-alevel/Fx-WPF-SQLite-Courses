@@ -7,11 +7,9 @@ namespace Courses.WPF.View
     public partial class CoursesView : UserControl
     {
         private CoursesViewModel _viewModel;
-        //AppDbContext context = new AppDbContext();
         public CoursesView(CoursesViewModel viewModel)
         {
             InitializeComponent();
-            //_viewModel = new CoursesViewModel(new CourseDataProvider(context)); //?
             _viewModel = viewModel;
             DataContext = _viewModel;
             Loaded += CoursesView_Loaded;
@@ -21,9 +19,6 @@ namespace Courses.WPF.View
         public CoursesView()
         {
             InitializeComponent();
-            //_viewModel = viewModel;
-            //DataContext = _viewModel;
-            //Loaded += CoursesView_Loaded;
         }
 
         private async void CoursesView_Loaded(object sender, RoutedEventArgs e)

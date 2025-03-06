@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using Courses.DAL.Model;
+using Courses.DAL.Models;
 
 namespace Courses.WPF.ViewModel
 {

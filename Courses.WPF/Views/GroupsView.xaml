@@ -29,6 +29,12 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
+                <Label
+                    Margin="10"
+                    FontSize="24"
+                    Foreground="AntiqueWhite">
+                    Groups
+                </Label>
                 <Button
                     Width="75"
                     Margin="10"
@@ -44,7 +50,7 @@
                 Grid.Row="1"
                 Margin="10,0,10,10"
                 ItemTemplate="{StaticResource GroupDataTemplate}"
-                ItemsSource="{Binding Path=Groups}"
+                ItemsSource="{Binding Groups}"
                 SelectedItem="{Binding SelectedGroup, Mode=TwoWay}" />
         </Grid>
 

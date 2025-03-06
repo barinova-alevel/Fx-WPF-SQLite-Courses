@@ -1,26 +1,16 @@
-﻿using Courses.DAL.Model;
+﻿using Courses.DAL.Models;
 
 namespace Courses.WPF.ViewModel
 {
-    public class StudentItemViewModel: ViewModelBase
+    public class TeacherItemViewModel : ViewModelBase
     {
-        private readonly Student _model;
+        private readonly Teacher _model;
 
-        public StudentItemViewModel(Student model)
+        public TeacherItemViewModel(Teacher model)
         {
             _model = model;
         }
-        public int StudentId => _model.StudentId;
-
-        public int GroupId
-        {
-            get => _model.GroupId;
-            set
-            {
-                _model.GroupId = value;
-                RaisePropertyChanged();
-            }
-        }
+        public int TeacherId => _model.TeacherId;
 
         public string? FirstName
         {

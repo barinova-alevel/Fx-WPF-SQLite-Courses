@@ -1,8 +1,8 @@
-﻿using Courses.DAL.Model;
+﻿using Courses.DAL.Models;
 
 namespace Courses.WPF.ViewModel
 {
-    public class CourseItemViewModel: ViewModelBase
+    public class CourseItemViewModel : ViewModelBase
     {
         private readonly Course _model;
 
@@ -31,5 +31,25 @@ namespace Courses.WPF.ViewModel
                 RaisePropertyChanged();
             }
         }
+
+        public ICollection<StudentsGroup> StudentsGroups
+        {
+            get => _model.StudentsGroups;
+            set
+            {
+                _model.StudentsGroups = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        //public ICollection<Student> Students
+        //{
+        //    get => _model.Students;
+        //    set
+        //    {
+        //        _model.Students = value;
+        //        RaisePropertyChanged();
+        //    }
+        //}
     }
 }
