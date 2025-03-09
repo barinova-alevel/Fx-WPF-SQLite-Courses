@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 using Courses.DAL.Models;
 
 namespace Courses.WPF.ViewModel
@@ -39,5 +40,6 @@ namespace Courses.WPF.ViewModel
                 RaisePropertyChanged();
             }
         }
+        public ObservableCollection<Student>? Students { get; }
     }
 }

@@ -15,6 +15,14 @@
                 <TextBlock Text="{Binding Name}" />
             </StackPanel>
         </DataTemplate>
+        <Style x:Key="StyledButton" TargetType="Button">
+            <Setter Property="Width" Value="120" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Background" Value="AliceBlue" />
+            <Setter Property="Foreground" Value="DarkBlue" />
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -60,7 +68,10 @@
             Grid.Column="1"
             Margin="10"
             Visibility="{Binding IsGroupSelected, Converter={StaticResource BooleanToVisibilityConv}}">
-            <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical">
+            <StackPanel
+                Margin="10"
+                HorizontalAlignment="Stretch"
+                Orientation="Vertical">
                 <Grid Margin="10" HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -88,16 +99,33 @@
                         Content="Summary" />
                 </Grid>
             </StackPanel>
-            <Label>Group name:</Label>
-            <TextBox Text="{Binding SelectedGroup.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Label>Group teacher:</Label>
-            <ComboBox ItemsSource="{Binding Path=Teachers}" SelectedItem="{Binding SelectedTeacher}" />
-            <Label Content="Number of students: " />
-            <Button
-                Width="75"
-                Margin="10"
-                HorizontalAlignment="Left"
-                Content="Clear group" />
+            <StackPanel Margin="10,0,0,0">
+                <Label>Group name:</Label>
+                <TextBox Text="{Binding SelectedGroup.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged" />
+                <Label Content="Group Teacher:" />
+                <ComboBox ItemsSource="{Binding Path=Teachers}" SelectedItem="{Binding SelectedTeacher}" />
+                <Label Content="Number of students: " />
+                <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical">
+                    <Grid Margin="10,5,5,5" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Button
+                            Grid.Column="0"
+                            Command="{Binding SaveCommand}"
+                            Content="Save"
+                            Style="{StaticResource StyledButton}" />
+                        <Button
+                            Grid.Column="1"
+                            Command="{Binding ClearGroupCommand}"
+                            Content="Clear group"
+                            Style="{StaticResource StyledButton}" />
+                    </Grid>
+                </StackPanel>
+
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

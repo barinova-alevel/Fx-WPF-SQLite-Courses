@@ -16,11 +16,14 @@ namespace Courses.WPF.ViewModel
             _groupDataProvider = groupDataProvider;
             ImportCommand = new DelegateCommand(Import);
             CreateCommand = new DelegateCommand(Create);
+            SaveCommand = new DelegateCommand(Save);
+            ClearGroupCommand = new DelegateCommand(ClearGroup);
             DeleteCommand = new DelegateCommand(Delete, CanDelete);
         }
 
         public ObservableCollection<GroupItemViewModel> Groups { get; } = new();
         public ObservableCollection<TeacherItemViewModel> Teachers { get; } = new();
+        public ObservableCollection<StudentItemViewModel>? Students { get; }
         public GroupItemViewModel? SelectedGroup
         {
             get => _selectedGroup;
@@ -48,6 +51,8 @@ namespace Courses.WPF.ViewModel
 
         public DelegateCommand ImportCommand { get; }
         public DelegateCommand CreateCommand { get; }
+        public DelegateCommand SaveCommand { get; }
+        public DelegateCommand ClearGroupCommand { get; }
         public DelegateCommand DeleteCommand { get; }
 
         public async override Task LoadAsync()
@@ -81,6 +86,14 @@ namespace Courses.WPF.ViewModel
             SelectedGroup = viewModel;
         }
 
+        private void Save(object? parameter) //rearrange to save!
+        {
+            var group = new StudentsGroup { Name = "Group name" };
+            var viewModel = new GroupItemViewModel(group);
+            Groups.Add(viewModel);
+            SelectedGroup = viewModel;
+        }
+
         private void Delete(object? parameter)
         {
             if (SelectedGroup is not null)
@@ -91,5 +104,15 @@ namespace Courses.WPF.ViewModel
         }
 
         private bool CanDelete(object? parameter) => SelectedGroup is not null;
+
+        public void ClearGroup(object? parameter)
+        {
+            if (Students is not null)
+            {
+                Students.Clear();
+                RaisePropertyChanged(nameof(Students));
+            }
+        }
+
     }
 }
