@@ -34,26 +34,29 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Menu FontSize="20">
-            <MenuItem Header="_Menu">
-                <MenuItem
-                    Command="{Binding SelectViewModelCommand}"
-                    CommandParameter="{Binding CoursesViewModel}"
-                    Header="_Courses" />
-                <MenuItem
-                    Command="{Binding SelectViewModelCommand}"
-                    CommandParameter="{Binding GroupsViewModel}"
-                    Header="_Groups" />
-                <MenuItem
-                    Command="{Binding SelectViewModelCommand}"
-                    CommandParameter="{Binding StudentsViewModel}"
-                    Header="_Students" />
-                <MenuItem
-                    Command="{Binding SelectViewModelCommand}"
-                    CommandParameter="{Binding TeachersViewModel}"
-                    Header="_Teachers" />
-            </MenuItem>
-        </Menu>
+        <Grid Grid.Row="0">
+            <Menu FontSize="20" Padding="5">
+                <MenuItem Width="167" Header="_Menu">
+                    <MenuItem
+                        Command="{Binding SelectViewModelCommand}"
+                        CommandParameter="{Binding CoursesViewModel}"
+                        Header="_Courses" />
+                    <MenuItem
+                        Command="{Binding SelectViewModelCommand}"
+                        CommandParameter="{Binding GroupsViewModel}"
+                        Header="_Groups" />
+                    <MenuItem
+                        Command="{Binding SelectViewModelCommand}"
+                        CommandParameter="{Binding StudentsViewModel}"
+                        Header="_Students" />
+                    <MenuItem
+                        Command="{Binding SelectViewModelCommand}"
+                        CommandParameter="{Binding TeachersViewModel}"
+                        Header="_Teachers" />
+                </MenuItem>
+            </Menu>
+        </Grid>
+
 
         <controls:TitleControl Grid.Row="1" />
 

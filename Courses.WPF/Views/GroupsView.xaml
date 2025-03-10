@@ -22,6 +22,27 @@
             <Setter Property="FontSize" Value="16" />
             <Setter Property="Background" Value="AliceBlue" />
             <Setter Property="Foreground" Value="DarkBlue" />
+            <Setter Property="BorderThickness" Value="0.5" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Margin" Value="5,5,0,0" />
+            <Setter Property="Foreground" Value="DarkBlue" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Margin" Value="5,0,0,5" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="BorderThickness" Value="0.5" />
+            <Setter Property="BorderBrush" Value="DarkBlue" />
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Margin" Value="5,0,0,5" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="BorderThickness" Value="0.5" />
+            <Setter Property="BorderBrush" Value="DarkBlue" />
+            <Setter Property="Background" Value="AliceBlue" />
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -31,34 +52,40 @@
         </Grid.ColumnDefinitions>
 
         <!--  Groups list  -->
-        <Grid Background="#777">
+
+        <Grid Background="AliceBlue">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <Label
                     Margin="10"
+                    Content="Groups"
                     FontSize="24"
-                    Foreground="AntiqueWhite">
-                    Groups
-                </Label>
+                    Foreground="DarkBlue" />
                 <Button
                     Width="75"
                     Margin="10"
                     Command="{Binding CreateCommand}"
-                    Content="Create" />
+                    Content="Create"
+                    Style="{StaticResource StyledButton}" />
                 <Button
                     Width="75"
                     Margin="0,10,10,10"
                     Command="{Binding DeleteCommand}"
-                    Content="Delete" />
+                    Content="Delete"
+                    Style="{StaticResource StyledButton}" />
             </StackPanel>
             <ListView
                 Grid.Row="1"
                 Margin="10,0,10,10"
+                BorderThickness="0.5"
+                FontSize="18"
                 ItemTemplate="{StaticResource GroupDataTemplate}"
                 ItemsSource="{Binding Groups}"
+                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
                 SelectedItem="{Binding SelectedGroup, Mode=TwoWay}" />
         </Grid>
 
@@ -72,7 +99,7 @@
                 Margin="10"
                 HorizontalAlignment="Stretch"
                 Orientation="Vertical">
-                <Grid Margin="10" HorizontalAlignment="Stretch">
+                <Grid Margin="10,5,5,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
@@ -80,52 +107,54 @@
                     </Grid.ColumnDefinitions>
                     <Button
                         Grid.Column="0"
-                        Width="75"
-                        Margin="10"
-                        HorizontalAlignment="Center"
                         Command="{Binding ImportCommand}"
-                        Content="Import sts" />
+                        Content="Import students"
+                        Style="{StaticResource StyledButton}" />
                     <Button
                         Grid.Column="1"
-                        Width="75"
-                        Margin="10"
-                        HorizontalAlignment="Center"
-                        Content="Export sts" />
+                        Content="Export students"
+                        Style="{StaticResource StyledButton}" />
                     <Button
                         Grid.Column="2"
-                        Width="75"
-                        Margin="10"
-                        HorizontalAlignment="Center"
-                        Content="Summary" />
+                        Content="Summary"
+                        Style="{StaticResource StyledButton}" />
                 </Grid>
             </StackPanel>
-            <StackPanel Margin="10,0,0,0">
-                <Label>Group name:</Label>
+            <StackPanel Margin="10,0,10,0">
+                <Label Content="Group name:" />
                 <TextBox Text="{Binding SelectedGroup.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged" />
                 <Label Content="Group Teacher:" />
-                <ComboBox ItemsSource="{Binding Path=Teachers}" SelectedItem="{Binding SelectedTeacher}" />
+                <ComboBox
+                    Background="AliceBlue"
+                    BorderBrush="DarkBlue"
+                    ItemsSource="{Binding Path=Teachers}"
+                    SelectedItem="{Binding SelectedTeacher}" />
                 <Label Content="Number of students: " />
-                <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical">
-                    <Grid Margin="10,5,5,5" HorizontalAlignment="Stretch">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Button
-                            Grid.Column="0"
-                            Command="{Binding SaveCommand}"
-                            Content="Save"
-                            Style="{StaticResource StyledButton}" />
-                        <Button
-                            Grid.Column="1"
-                            Command="{Binding ClearGroupCommand}"
-                            Content="Clear group"
-                            Style="{StaticResource StyledButton}" />
-                    </Grid>
-                </StackPanel>
 
             </StackPanel>
+            <StackPanel
+                Margin="10"
+                HorizontalAlignment="Stretch"
+                Orientation="Vertical">
+                <Grid Margin="10,5,5,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Grid.Column="0"
+                        Command="{Binding SaveCommand}"
+                        Content="Save"
+                        Style="{StaticResource StyledButton}" />
+                    <Button
+                        Grid.Column="1"
+                        Command="{Binding ClearGroupCommand}"
+                        Content="Clear group"
+                        Style="{StaticResource StyledButton}" />
+                </Grid>
+            </StackPanel>
+
         </StackPanel>
     </Grid>
 </UserControl>
