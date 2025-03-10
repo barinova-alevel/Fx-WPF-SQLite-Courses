@@ -13,9 +13,11 @@
             Grid.Row="1"
             Grid.ColumnSpan="2"
             Margin="5,5,5,5"
+            HorizontalAlignment="Center"
             Orientation="Horizontal">
             <TextBlock
                 FontSize="30"
+                FontStyle="Italic"
                 Foreground="{StaticResource TitleForegroundBrush}"
                 Text="Courses app" />
         </StackPanel>

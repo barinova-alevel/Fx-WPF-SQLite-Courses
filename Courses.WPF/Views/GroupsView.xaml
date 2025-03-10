@@ -52,7 +52,6 @@
         </Grid.ColumnDefinitions>
 
         <!--  Groups list  -->
-
         <Grid Background="AliceBlue">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

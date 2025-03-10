@@ -30,15 +30,21 @@
 
         <!--  Courses Groups Tree  -->
         <Grid Background="AliceBlue">
-
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
+            <Label
+                Margin="10"
+                HorizontalAlignment="Center"
+                Content="Courses"
+                FontSize="24"
+                Foreground="DarkBlue" />
 
             <TreeView
                 Grid.Row="1"
                 Margin="10,0,10,10"
+                BorderThickness="0.5"
                 ItemsSource="{Binding Courses}">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type models:Course}" ItemsSource="{Binding StudentsGroups}">
