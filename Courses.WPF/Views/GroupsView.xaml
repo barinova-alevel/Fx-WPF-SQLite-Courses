@@ -126,8 +126,9 @@
                 <ComboBox
                     Background="AliceBlue"
                     BorderBrush="DarkBlue"
+                    DisplayMemberPath="LastName"
                     ItemsSource="{Binding Path=Teachers}"
-                    SelectedItem="{Binding SelectedTeacher}" />
+                    SelectedItem="{Binding SelectedTeacher, Mode=TwoWay}" />
                 <Label Content="Number of students: " />
 
             </StackPanel>

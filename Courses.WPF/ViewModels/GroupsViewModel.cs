@@ -8,12 +8,14 @@ namespace Courses.WPF.ViewModel
     public class GroupsViewModel : ViewModelBase
     {
         private readonly IGroupDataProvider _groupDataProvider;
+        private readonly ITeacherDataProvider _teacherDataProvider;
         private GroupItemViewModel? _selectedGroup;
         private TeacherItemViewModel? _selectedTeacher;
 
-        public GroupsViewModel(IGroupDataProvider groupDataProvider)
+        public GroupsViewModel(IGroupDataProvider groupDataProvider, ITeacherDataProvider teacherDataProvider)
         {
             _groupDataProvider = groupDataProvider;
+            _teacherDataProvider = teacherDataProvider;
             ImportCommand = new DelegateCommand(Import);
             CreateCommand = new DelegateCommand(Create);
             SaveCommand = new DelegateCommand(Save);
@@ -33,6 +35,10 @@ namespace Courses.WPF.ViewModel
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsGroupSelected));
                 DeleteCommand.RaiseCanExecuteChanged();
+                if (_selectedGroup != null)
+                {
+                    SelectedTeacher = Teachers.FirstOrDefault(t => t.TeacherId == _selectedGroup.Id);
+                }
             }
         }
 
@@ -57,7 +63,7 @@ namespace Courses.WPF.ViewModel
 
         public async override Task LoadAsync()
         {
-            if (Groups.Any())
+            if (Groups.Any() && Teachers.Any())
             {
                 return;
             }
@@ -66,9 +72,25 @@ namespace Courses.WPF.ViewModel
 
             if (groups is not null)
             {
+                Groups.Clear();
                 foreach (var group in groups)
                 {
                     Groups.Add(new GroupItemViewModel(group));
+                }
+            }
+            await LoadTeachersAsync();
+        }
+
+        private async Task LoadTeachersAsync()
+        {
+            Teachers.Clear();
+
+            var teachers = await _teacherDataProvider.GetAllAsync();
+            if (teachers is not null)
+            {
+                foreach (var teacher in teachers)
+                {
+                    Teachers.Add(new TeacherItemViewModel(teacher));
                 }
             }
         }

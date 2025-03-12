@@ -31,5 +31,7 @@ namespace Courses.WPF.ViewModel
                 RaisePropertyChanged();
             }
         }
+
+
     }
 }

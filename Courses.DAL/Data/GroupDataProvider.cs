@@ -13,7 +13,9 @@ namespace Courses.DAL.Data
         }
         public async Task<IEnumerable<StudentsGroup>?> GetAllAsync()
         {
-            return await _context.StudentsGroups.ToListAsync();
+            return await _context.StudentsGroups
+                .Include(g => g.Teacher)
+                .ToListAsync();
         }
     }
 }
