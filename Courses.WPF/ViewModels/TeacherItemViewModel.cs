@@ -31,7 +31,19 @@ namespace Courses.WPF.ViewModel
                 RaisePropertyChanged();
             }
         }
+        public override bool Equals(object? obj)
+        {
+            if (obj is TeacherItemViewModel other)
+            {
+                return this.TeacherId == other.TeacherId;
+            }
+            return false;
+        }
 
+        public override int GetHashCode()
+        {
+            return TeacherId.GetHashCode();
+        }
 
     }
 }

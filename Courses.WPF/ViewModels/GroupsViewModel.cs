@@ -35,9 +35,13 @@ namespace Courses.WPF.ViewModel
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsGroupSelected));
                 DeleteCommand.RaiseCanExecuteChanged();
-                if (_selectedGroup != null)
+                if (_selectedGroup?.Teacher != null)
                 {
-                    SelectedTeacher = Teachers.FirstOrDefault(t => t.TeacherId == _selectedGroup.Id);
+                    SelectedTeacher = Teachers.FirstOrDefault(t => t.TeacherId.Equals(_selectedGroup.Teacher.TeacherId));
+                }
+                else 
+                {
+                    SelectedTeacher = null;
                 }
             }
         }
