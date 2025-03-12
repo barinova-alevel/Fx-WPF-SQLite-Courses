@@ -1,7 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using Courses.DAL.Data;
 using Courses.DAL.Models;
 using Courses.WPF.Command;
+using Microsoft.EntityFrameworkCore;
 
 namespace Courses.WPF.ViewModel
 {
@@ -35,6 +38,7 @@ namespace Courses.WPF.ViewModel
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsGroupSelected));
                 DeleteCommand.RaiseCanExecuteChanged();
+
                 if (_selectedGroup?.Teacher != null)
                 {
                     SelectedTeacher = Teachers.FirstOrDefault(t => t.TeacherId.Equals(_selectedGroup.Teacher.TeacherId));
@@ -112,12 +116,27 @@ namespace Courses.WPF.ViewModel
             SelectedGroup = viewModel;
         }
 
-        private void Save(object? parameter) //rearrange to save!
+        private async void Save(object? parameter)
         {
-            var group = new StudentsGroup { Name = "Group name" };
-            var viewModel = new GroupItemViewModel(group);
-            Groups.Add(viewModel);
-            SelectedGroup = viewModel;
+            if (SelectedGroup == null)
+                return;
+
+            try
+            {
+                if (SelectedTeacher != null)
+                {
+                    SelectedGroup.TeacherId = SelectedTeacher.TeacherId;
+                    SelectedGroup.Teacher = SelectedTeacher.Model;
+                }
+
+                await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
+
+                RaisePropertyChanged(nameof(Groups));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error saving group: {ex.Message}");
+            }
         }
 
         private void Delete(object? parameter)

@@ -6,6 +6,7 @@ namespace Courses.WPF.ViewModel
     {
         private readonly Teacher _model;
 
+        public Teacher Model => _model; // Model for database updates
         public TeacherItemViewModel(Teacher model)
         {
             _model = model;

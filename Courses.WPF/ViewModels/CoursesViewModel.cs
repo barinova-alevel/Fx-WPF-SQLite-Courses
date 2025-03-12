@@ -13,7 +13,6 @@ namespace Courses.WPF.ViewModel
         public CoursesViewModel(ICourseDataProvider courseDataProvider)
         {
             _courseDataProvider = courseDataProvider;
-            //await LoadAsync(); //error for await
             LoadAsync();
         }
         public ObservableCollection<CourseItemViewModel> Courses { get; } = new();

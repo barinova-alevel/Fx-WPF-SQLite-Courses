@@ -7,6 +7,7 @@ namespace Courses.WPF.ViewModel
     public class GroupItemViewModel : ViewModelBase
     {
         private readonly StudentsGroup _model;
+        public StudentsGroup Model => _model; // Model for database updates
         public GroupItemViewModel(StudentsGroup model)
         {
             _model = model;
@@ -38,6 +39,19 @@ namespace Courses.WPF.ViewModel
             {
                 _model.Teacher = value;
                 RaisePropertyChanged();
+            }
+        }
+
+        public int? TeacherId
+        {
+            get => _model.TeacherId;
+            set
+            {
+                if (_model.TeacherId != value)
+                {
+                    _model.TeacherId = value;
+                    RaisePropertyChanged();
+                }
             }
         }
         public ObservableCollection<Student>? Students { get; }

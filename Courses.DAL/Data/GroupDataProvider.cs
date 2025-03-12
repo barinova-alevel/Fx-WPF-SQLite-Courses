@@ -17,5 +17,11 @@ namespace Courses.DAL.Data
                 .Include(g => g.Teacher)
                 .ToListAsync();
         }
+
+        public async Task UpdateAsync(StudentsGroup group)
+        {
+            _context.StudentsGroups.Update(group);
+            await _context.SaveChangesAsync();
+        }
     }
 }

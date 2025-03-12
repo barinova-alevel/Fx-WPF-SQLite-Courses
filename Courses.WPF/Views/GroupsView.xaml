@@ -128,7 +128,7 @@
                     BorderBrush="DarkBlue"
                     DisplayMemberPath="LastName"
                     ItemsSource="{Binding Path=Teachers}"
-                    SelectedItem="{Binding SelectedTeacher, Mode=TwoWay}" />
+                    SelectedItem="{Binding SelectedTeacher, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="Number of students: " />
 
             </StackPanel>
