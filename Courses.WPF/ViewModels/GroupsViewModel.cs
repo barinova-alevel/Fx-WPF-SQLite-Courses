@@ -22,7 +22,7 @@ namespace Courses.WPF.ViewModel
             ImportCommand = new DelegateCommand(Import);
             CreateCommand = new DelegateCommand(Create);
             SaveCommand = new DelegateCommand(Save);
-            ClearGroupCommand = new DelegateCommand(ClearGroup);
+            ClearGroupCommand = new DelegateCommand(ClearGroup, CanClearGroup);
             DeleteCommand = new DelegateCommand(Delete, CanDelete);
         }
 
@@ -37,13 +37,15 @@ namespace Courses.WPF.ViewModel
                 _selectedGroup = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsGroupSelected));
+                RaisePropertyChanged(nameof(SelectedGroup.StudentCount));
                 DeleteCommand.RaiseCanExecuteChanged();
+                ClearGroupCommand.RaiseCanExecuteChanged();
 
                 if (_selectedGroup?.Teacher != null)
                 {
                     SelectedTeacher = Teachers.FirstOrDefault(t => t.TeacherId.Equals(_selectedGroup.Teacher.TeacherId));
                 }
-                else 
+                else
                 {
                     SelectedTeacher = null;
                 }
@@ -144,7 +146,7 @@ namespace Courses.WPF.ViewModel
                     await _groupDataProvider.AddAsync(SelectedGroup.Model);
                     await _groupDataProvider.ReloadAsync(SelectedGroup.Model);
                     Debug.WriteLine($"New group saved! Assigned ID: {SelectedGroup.Model.Id}");
-                    RaisePropertyChanged(nameof(SelectedGroup)); // comment?
+                    RaisePropertyChanged(nameof(SelectedGroup));
                 }
                 else
                 {
@@ -154,6 +156,7 @@ namespace Courses.WPF.ViewModel
 
                 RaisePropertyChanged(nameof(Groups));
                 RaisePropertyChanged(nameof(SelectedGroup));
+                ClearGroupCommand.RaiseCanExecuteChanged();
             }
             catch (Exception ex)
             {
@@ -178,12 +181,14 @@ namespace Courses.WPF.ViewModel
 
         public void ClearGroup(object? parameter)
         {
-            if (Students is not null)
+            if (SelectedGroup?.Model.Students != null)
             {
-                Students.Clear();
-                RaisePropertyChanged(nameof(Students));
+                SelectedGroup.Model.Students.Clear();
+                SelectedGroup.UpdateStudentCount();
+                RaisePropertyChanged(nameof(SelectedGroup));
+                ClearGroupCommand.RaiseCanExecuteChanged();
             }
         }
-
+        private bool CanClearGroup(object? parameter) => SelectedGroup?.Model.Students?.Any() == true;
     }
 }

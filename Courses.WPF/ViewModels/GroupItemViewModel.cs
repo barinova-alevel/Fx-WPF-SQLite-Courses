@@ -58,5 +58,13 @@ namespace Courses.WPF.ViewModel
             }
         }
         public ObservableCollection<Student>? Students { get; }
+
+        public int StudentCount => _model.Students?.Count ?? 0;
+
+        public void UpdateStudentCount()
+        {
+            RaisePropertyChanged(nameof(StudentCount));
+            RaisePropertyChanged(nameof(Model.Students));
+        }
     }
 }
