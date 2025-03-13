@@ -23,5 +23,16 @@ namespace Courses.DAL.Data
             _context.StudentsGroups.Update(group);
             await _context.SaveChangesAsync();
         }
+
+        public async Task AddAsync(StudentsGroup group)
+        {
+            _context.StudentsGroups.Add(group);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ReloadAsync(StudentsGroup group)
+        {
+            await _context.Entry(group).ReloadAsync();
+        }
     }
 }

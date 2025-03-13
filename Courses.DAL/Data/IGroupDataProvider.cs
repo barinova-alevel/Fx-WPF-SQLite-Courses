@@ -7,5 +7,9 @@ namespace Courses.DAL.Data
         Task<IEnumerable<StudentsGroup>?> GetAllAsync();
 
         Task UpdateAsync(StudentsGroup group);
+
+        Task AddAsync(StudentsGroup group);
+
+        Task ReloadAsync(StudentsGroup group);
     }
 }

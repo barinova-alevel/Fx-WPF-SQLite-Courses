@@ -110,7 +110,7 @@ namespace Courses.WPF.ViewModel
 
         private void Create(object? parameter)
         {
-            var group = new StudentsGroup { Name = "Group name" };
+            var group = new StudentsGroup { Name = "New group name" };
             var viewModel = new GroupItemViewModel(group);
             Groups.Add(viewModel);
             SelectedGroup = viewModel;
@@ -125,17 +125,43 @@ namespace Courses.WPF.ViewModel
             {
                 if (SelectedTeacher != null)
                 {
+                    Debug.WriteLine($"Assigning TeacherId: {SelectedTeacher.TeacherId}");
                     SelectedGroup.TeacherId = SelectedTeacher.TeacherId;
                     SelectedGroup.Teacher = SelectedTeacher.Model;
                 }
+                else
+                {
+                    Debug.WriteLine("No teacher selected, setting TeacherId to null.");
+                    SelectedGroup.TeacherId = null;
+                }
 
-                await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
+                if (SelectedGroup.Model.Id == 0)
+                {
+                    Debug.WriteLine("Adding a new group to the database...");
+                    Debug.WriteLine($"Selected Teacher: {SelectedTeacher}");
+                    Debug.WriteLine($"Selected TeacherId: {SelectedTeacher?.TeacherId}");
+                    Debug.WriteLine($"Group TeacherId before save: {SelectedGroup.TeacherId}");
+                    await _groupDataProvider.AddAsync(SelectedGroup.Model);
+                    await _groupDataProvider.ReloadAsync(SelectedGroup.Model);
+                    Debug.WriteLine($"New group saved! Assigned ID: {SelectedGroup.Model.Id}");
+                    RaisePropertyChanged(nameof(SelectedGroup)); // comment?
+                }
+                else
+                {
+                    Debug.WriteLine($"Updating existing group with ID: {SelectedGroup.Model.Id}");
+                    await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
+                }
 
                 RaisePropertyChanged(nameof(Groups));
+                RaisePropertyChanged(nameof(SelectedGroup));
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error saving group: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Debug.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
             }
         }
 
