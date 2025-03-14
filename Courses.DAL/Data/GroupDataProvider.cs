@@ -34,5 +34,10 @@ namespace Courses.DAL.Data
         {
             await _context.Entry(group).ReloadAsync();
         }
+
+        public async Task LoadStudentsAsync(StudentsGroup group)
+        {
+            _context.Entry(group).Collection(g => g.Students).Load();
+        }
     }
 }

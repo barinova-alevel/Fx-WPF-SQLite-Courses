@@ -21,8 +21,10 @@ namespace Courses.WPF.ViewModel
             _teacherDataProvider = teacherDataProvider;
             ImportCommand = new DelegateCommand(Import);
             CreateCommand = new DelegateCommand(Create);
-            SaveCommand = new DelegateCommand(Save);
-            ClearGroupCommand = new DelegateCommand(ClearGroup, CanClearGroup);
+            //SaveCommand = new DelegateCommand(Save);
+            SaveCommand = new DelegateCommand(async(param) => await SaveAsync(param));
+            //ClearGroupCommand = new DelegateCommand(ClearGroup, CanClearGroup);
+            ClearGroupCommand = new DelegateCommand(async (param) => await ClearGroupAsync(param), CanClearGroup);
             DeleteCommand = new DelegateCommand(Delete, CanDelete);
         }
 
@@ -118,7 +120,56 @@ namespace Courses.WPF.ViewModel
             SelectedGroup = viewModel;
         }
 
-        private async void Save(object? parameter)
+        //private async void Save(object? parameter)
+        //{
+        //    if (SelectedGroup == null)
+        //        return;
+
+        //    try
+        //    {
+        //        if (SelectedTeacher != null)
+        //        {
+        //            Debug.WriteLine($"Assigning TeacherId: {SelectedTeacher.TeacherId}");
+        //            SelectedGroup.TeacherId = SelectedTeacher.TeacherId;
+        //            SelectedGroup.Teacher = SelectedTeacher.Model;
+        //        }
+        //        else
+        //        {
+        //            Debug.WriteLine("No teacher selected, setting TeacherId to null.");
+        //            SelectedGroup.TeacherId = null;
+        //        }
+
+        //        if (SelectedGroup.Model.Id == 0)
+        //        {
+        //            Debug.WriteLine("Adding a new group to the database...");
+        //            Debug.WriteLine($"Selected Teacher: {SelectedTeacher}");
+        //            Debug.WriteLine($"Selected TeacherId: {SelectedTeacher?.TeacherId}");
+        //            Debug.WriteLine($"Group TeacherId before save: {SelectedGroup.TeacherId}");
+        //            await _groupDataProvider.AddAsync(SelectedGroup.Model);
+        //            await _groupDataProvider.ReloadAsync(SelectedGroup.Model);
+        //            Debug.WriteLine($"New group saved! Assigned ID: {SelectedGroup.Model.Id}");
+        //            RaisePropertyChanged(nameof(SelectedGroup));
+        //        }
+        //        else
+        //        {
+        //            Debug.WriteLine($"Updating existing group with ID: {SelectedGroup.Model.Id}");
+        //            await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
+        //        }
+
+        //        RaisePropertyChanged(nameof(Groups));
+        //        RaisePropertyChanged(nameof(SelectedGroup));
+        //        ClearGroupCommand.RaiseCanExecuteChanged();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine($"Error saving group: {ex.Message}");
+        //        if (ex.InnerException != null)
+        //        {
+        //            Debug.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+        //        }
+        //    }
+        //}
+        private async Task SaveAsync(object? parameter)
         {
             if (SelectedGroup == null)
                 return;
@@ -154,9 +205,11 @@ namespace Courses.WPF.ViewModel
                     await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
                 }
 
+                await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
                 RaisePropertyChanged(nameof(Groups));
                 RaisePropertyChanged(nameof(SelectedGroup));
-                ClearGroupCommand.RaiseCanExecuteChanged();
+                //ClearGroupCommand.RaiseCanExecuteChanged();
+                ((DelegateCommand)ClearGroupCommand).RaiseCanExecuteChanged();
             }
             catch (Exception ex)
             {
@@ -179,15 +232,38 @@ namespace Courses.WPF.ViewModel
 
         private bool CanDelete(object? parameter) => SelectedGroup is not null;
 
-        public void ClearGroup(object? parameter)
+        //public async void ClearGroup(object? parameter)
+        //{
+        //    if (SelectedGroup?.Model.Students != null)
+        //    {
+        //        SelectedGroup.Model.Students.Clear();
+        //        SelectedGroup.UpdateStudentCount();
+        //        await SaveAsync(parameter);
+        //        RaisePropertyChanged(nameof(SelectedGroup));
+        //        ClearGroupCommand.RaiseCanExecuteChanged();
+        //    }
+        //}
+        public async Task ClearGroupAsync(object? parameter = null)
         {
-            if (SelectedGroup?.Model.Students != null)
+            if (SelectedGroup == null) return;
+
+            try
             {
+                Debug.WriteLine($"Clearing students for group: {SelectedGroup.Model.Id}");
+
                 SelectedGroup.Model.Students.Clear();
-                SelectedGroup.UpdateStudentCount();
+
+                await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
+
+                Debug.WriteLine("Group cleared successfully!");
                 RaisePropertyChanged(nameof(SelectedGroup));
-                ClearGroupCommand.RaiseCanExecuteChanged();
+                RaisePropertyChanged(nameof(Groups));
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error clearing group: {ex.Message}");
+            }
+
         }
         private bool CanClearGroup(object? parameter) => SelectedGroup?.Model.Students?.Any() == true;
     }

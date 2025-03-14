@@ -11,5 +11,6 @@ namespace Courses.DAL.Data
         Task AddAsync(StudentsGroup group);
 
         Task ReloadAsync(StudentsGroup group);
+        public Task LoadStudentsAsync(StudentsGroup group);
     }
 }
