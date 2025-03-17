@@ -110,11 +110,12 @@
                     </Grid.ColumnDefinitions>
                     <Button
                         Grid.Column="0"
-                        Command="{Binding ImportCommand}"
+                        Command="{Binding ImportStudentsCommand}"
                         Content="Import students"
                         Style="{StaticResource StyledButton}" />
                     <Button
                         Grid.Column="1"
+                        Command="{Binding ExportStudentsCommand}"
                         Content="Export students"
                         Style="{StaticResource StyledButton}" />
                     <Button

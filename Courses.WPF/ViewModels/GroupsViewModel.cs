@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.Windows;
 using Courses.DAL.Data;
 using Courses.DAL.Models;
 using Courses.WPF.Command;
-using Microsoft.EntityFrameworkCore;
 
 namespace Courses.WPF.ViewModel
 {
@@ -19,13 +19,12 @@ namespace Courses.WPF.ViewModel
         {
             _groupDataProvider = groupDataProvider;
             _teacherDataProvider = teacherDataProvider;
-            ImportCommand = new DelegateCommand(Import);
             CreateCommand = new DelegateCommand(Create);
-            //SaveCommand = new DelegateCommand(Save);
-            SaveCommand = new DelegateCommand(async(param) => await SaveAsync(param));
-            //ClearGroupCommand = new DelegateCommand(ClearGroup, CanClearGroup);
+            SaveCommand = new DelegateCommand(async (param) => await SaveAsync(param));
             ClearGroupCommand = new DelegateCommand(async (param) => await ClearGroupAsync(param), CanClearGroup);
             DeleteCommand = new DelegateCommand(Delete, CanDelete);
+            ImportStudentsCommand = new DelegateCommand(ImportStudents);
+            ExportStudentsCommand = new DelegateCommand(async (parameter) => await ExportStudentsAsync(parameter));
         }
 
         public ObservableCollection<GroupItemViewModel> Groups { get; } = new();
@@ -67,11 +66,12 @@ namespace Courses.WPF.ViewModel
 
         public bool IsGroupSelected => SelectedGroup is not null;
 
-        public DelegateCommand ImportCommand { get; }
         public DelegateCommand CreateCommand { get; }
         public DelegateCommand SaveCommand { get; }
         public DelegateCommand ClearGroupCommand { get; }
         public DelegateCommand DeleteCommand { get; }
+        public DelegateCommand ExportStudentsCommand { get; }
+        public DelegateCommand ImportStudentsCommand { get; }
 
         public async override Task LoadAsync()
         {
@@ -107,10 +107,127 @@ namespace Courses.WPF.ViewModel
             }
         }
 
-        public void Import(object? parameter)
+       private GroupItemViewModel? MapStudentsGroupToGroupItemViewModel(StudentsGroup? studentsGroup)
         {
-            throw new NotImplementedException();
+            if (studentsGroup == null)
+            {
+                return null;
+            }
+
+            return new GroupItemViewModel(studentsGroup);
         }
+        public async Task ExportStudentsAsync(object? parameter)
+        {
+            if (SelectedGroup == null)
+            {
+                MessageBox.Show("Please select a group first.", "Export", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            StudentsGroup studentsGroup = await _groupDataProvider.GetGroupWithStudentsAsync(SelectedGroup.Id);
+            SelectedGroup = MapStudentsGroupToGroupItemViewModel(studentsGroup);
+
+            if (SelectedGroup == null)
+            {
+                MessageBox.Show("Group not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (SelectedGroup.Students == null || !SelectedGroup.Students.Any())
+            {
+                Debug.WriteLine($"SelectedGroup.Students: {SelectedGroup.Students}"); //got emopty SelectedGroup.Students: 
+                MessageBox.Show("No students to export.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var saveFileDialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "CSV Files (*.csv)|*.csv",
+                FileName = $"Students_{SelectedGroup.Name}.csv"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    using (var writer = new StreamWriter(saveFileDialog.FileName))
+                    {
+                        writer.WriteLine("StudentId,FirstName,LastName"); // CSV Header
+                        foreach (var student in SelectedGroup.Students)
+                        {
+                            writer.WriteLine($"{student.StudentId},{student.FirstName},{student.LastName}");
+                        }
+                    }
+                    MessageBox.Show("Export successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error exporting students: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+
+        private async void ImportStudents(object? parameter)
+        {
+            //if (SelectedGroup == null)
+            //{
+            //    MessageBox.Show("Please select a group first.", "Import", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //    return;
+            //}
+
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "CSV Files (*.csv)|*.csv"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    SelectedGroup.Students.Clear();
+                    await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
+
+                    using (var reader = new StreamReader(openFileDialog.FileName))
+                    {
+                        string? line;
+                        bool isFirstLine = true;
+
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            if (isFirstLine)
+                            {
+                                isFirstLine = false;
+                                continue;
+                            }
+
+                            var values = line.Split(',');
+                            if (values.Length == 3)
+                            {
+                                var student = new Student
+                                {
+                                    StudentId = int.Parse(values[0]),
+                                    FirstName = values[1],
+                                    LastName = values[2],
+                                    GroupId = SelectedGroup.Model.Id
+                                };
+
+                                SelectedGroup.Students.Add(student);
+                            }
+                        }
+                    }
+
+                    await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
+                    RaisePropertyChanged(nameof(SelectedGroup));
+
+                    MessageBox.Show("Import successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error importing students: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
 
         private void Create(object? parameter)
         {
@@ -120,55 +237,6 @@ namespace Courses.WPF.ViewModel
             SelectedGroup = viewModel;
         }
 
-        //private async void Save(object? parameter)
-        //{
-        //    if (SelectedGroup == null)
-        //        return;
-
-        //    try
-        //    {
-        //        if (SelectedTeacher != null)
-        //        {
-        //            Debug.WriteLine($"Assigning TeacherId: {SelectedTeacher.TeacherId}");
-        //            SelectedGroup.TeacherId = SelectedTeacher.TeacherId;
-        //            SelectedGroup.Teacher = SelectedTeacher.Model;
-        //        }
-        //        else
-        //        {
-        //            Debug.WriteLine("No teacher selected, setting TeacherId to null.");
-        //            SelectedGroup.TeacherId = null;
-        //        }
-
-        //        if (SelectedGroup.Model.Id == 0)
-        //        {
-        //            Debug.WriteLine("Adding a new group to the database...");
-        //            Debug.WriteLine($"Selected Teacher: {SelectedTeacher}");
-        //            Debug.WriteLine($"Selected TeacherId: {SelectedTeacher?.TeacherId}");
-        //            Debug.WriteLine($"Group TeacherId before save: {SelectedGroup.TeacherId}");
-        //            await _groupDataProvider.AddAsync(SelectedGroup.Model);
-        //            await _groupDataProvider.ReloadAsync(SelectedGroup.Model);
-        //            Debug.WriteLine($"New group saved! Assigned ID: {SelectedGroup.Model.Id}");
-        //            RaisePropertyChanged(nameof(SelectedGroup));
-        //        }
-        //        else
-        //        {
-        //            Debug.WriteLine($"Updating existing group with ID: {SelectedGroup.Model.Id}");
-        //            await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
-        //        }
-
-        //        RaisePropertyChanged(nameof(Groups));
-        //        RaisePropertyChanged(nameof(SelectedGroup));
-        //        ClearGroupCommand.RaiseCanExecuteChanged();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine($"Error saving group: {ex.Message}");
-        //        if (ex.InnerException != null)
-        //        {
-        //            Debug.WriteLine($"Inner Exception: {ex.InnerException.Message}");
-        //        }
-        //    }
-        //}
         private async Task SaveAsync(object? parameter)
         {
             if (SelectedGroup == null)
@@ -208,8 +276,7 @@ namespace Courses.WPF.ViewModel
                 await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
                 RaisePropertyChanged(nameof(Groups));
                 RaisePropertyChanged(nameof(SelectedGroup));
-                //ClearGroupCommand.RaiseCanExecuteChanged();
-                ((DelegateCommand)ClearGroupCommand).RaiseCanExecuteChanged();
+                ClearGroupCommand.RaiseCanExecuteChanged();
             }
             catch (Exception ex)
             {
@@ -232,17 +299,6 @@ namespace Courses.WPF.ViewModel
 
         private bool CanDelete(object? parameter) => SelectedGroup is not null;
 
-        //public async void ClearGroup(object? parameter)
-        //{
-        //    if (SelectedGroup?.Model.Students != null)
-        //    {
-        //        SelectedGroup.Model.Students.Clear();
-        //        SelectedGroup.UpdateStudentCount();
-        //        await SaveAsync(parameter);
-        //        RaisePropertyChanged(nameof(SelectedGroup));
-        //        ClearGroupCommand.RaiseCanExecuteChanged();
-        //    }
-        //}
         public async Task ClearGroupAsync(object? parameter = null)
         {
             if (SelectedGroup == null) return;
@@ -263,8 +319,49 @@ namespace Courses.WPF.ViewModel
             {
                 Debug.WriteLine($"Error clearing group: {ex.Message}");
             }
-
         }
+
         private bool CanClearGroup(object? parameter) => SelectedGroup?.Model.Students?.Any() == true;
+
+        private async Task LoadSelectedGroupAsync(int groupId)
+        {
+            var group = await _groupDataProvider.GetGroupWithStudentsAsync(groupId);
+
+            if (group != null)
+            {
+                SelectedGroup = new GroupItemViewModel(group);
+                RaisePropertyChanged(nameof(SelectedGroup));
+            }
+        }
+
+        //private bool CanExportStudents()
+        //{
+        //    return SelectedGroup != null && SelectedGroup.Students != null && SelectedGroup.Students.Any();
+        //}
+
+        //private bool CanExportStudents()
+        //{
+        //    if (SelectedGroup == null)
+        //    {
+        //        Debug.WriteLine("SelectedGroup is null.");
+        //        return false;
+        //    }
+
+        //    if (SelectedGroup.Students == null)
+        //    {
+        //        Debug.WriteLine("SelectedGroup.Students is null.");
+        //        return false;
+        //    }
+
+        //    if (!SelectedGroup.Students.Any())
+        //    {
+        //        Debug.WriteLine("SelectedGroup.Students is empty.");
+        //        return false;
+        //    }
+
+        //    Debug.WriteLine("CanExportStudents evaluated to true.");
+        //    return true;
+        //}
+
     }
 }
