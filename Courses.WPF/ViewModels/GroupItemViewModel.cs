@@ -11,6 +11,9 @@ namespace Courses.WPF.ViewModel
         public GroupItemViewModel(StudentsGroup model)
         {
             _model = model;
+            Students = new ObservableCollection<StudentItemViewModel>(
+            model.Students?.Select(s => new StudentItemViewModel(s)) ?? Enumerable.Empty<StudentItemViewModel>()
+        );
         }
         public int Id => _model.Id;
         public string? Name
@@ -57,14 +60,16 @@ namespace Courses.WPF.ViewModel
                 }
             }
         }
-        public ObservableCollection<Student>? Students { get; }
+        //public ObservableCollection<Student>? Students { get; }
+        public ObservableCollection<StudentItemViewModel>? Students { get; }
 
-        public int StudentCount => _model.Students?.Count ?? 0;
+        //public int StudentCount => _model.Students?.Count ?? 0;
+        public int StudentCount => Students?.Count ?? 0;
 
         public void UpdateStudentCount()
         {
             RaisePropertyChanged(nameof(StudentCount));
-            RaisePropertyChanged(nameof(Model.Students));
+            //RaisePropertyChanged(nameof(Model.Students));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Courses.DAL.Models;
+﻿using System.Collections.ObjectModel;
+using Courses.DAL.Models;
 
 namespace Courses.WPF.ViewModel
 {
@@ -41,6 +42,17 @@ namespace Courses.WPF.ViewModel
                 RaisePropertyChanged();
             }
         }
+
+        //got exception if use following:
+        //public ObservableCollection<StudentsGroup> StudentsGroups
+        //{
+        //    get => (ObservableCollection<StudentsGroup>)_model.StudentsGroups;
+        //    set
+        //    {
+        //        _model.StudentsGroups = value;
+        //        RaisePropertyChanged();
+        //    }
+        //}
 
         //public ICollection<Student> Students
         //{

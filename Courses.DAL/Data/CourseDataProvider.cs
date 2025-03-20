@@ -37,22 +37,5 @@ namespace Courses.DAL.Data
                 })
                 .ToListAsync();
         }
-        //
-        //public async Task<IEnumerable<Course>?> GetAllAsync()
-        //{
-        //    return await _context.Courses
-        //        .Include(c => c.StudentsGroups)
-        //        .Select(c => new Course
-        //        {
-        //            CourseId = c.CourseId,
-        //            Name = c.Name,
-        //            Description = c.Description,
-        //            StudentsGroups = c.StudentsGroups != null
-        //                ? new List<StudentsGroup>(c.StudentsGroups)
-        //                : new List<StudentsGroup>()
-        //        })
-        //        .ToListAsync();
-        //}
-
     }
 }

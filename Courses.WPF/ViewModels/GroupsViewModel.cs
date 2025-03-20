@@ -12,24 +12,27 @@ namespace Courses.WPF.ViewModel
     {
         private readonly IGroupDataProvider _groupDataProvider;
         private readonly ITeacherDataProvider _teacherDataProvider;
+        private readonly IStudentDataProvider _studentDataProvider;
         private GroupItemViewModel? _selectedGroup;
         private TeacherItemViewModel? _selectedTeacher;
+        private GroupItemViewModel _groupStudents;
 
-        public GroupsViewModel(IGroupDataProvider groupDataProvider, ITeacherDataProvider teacherDataProvider)
+        public GroupsViewModel(IGroupDataProvider groupDataProvider, ITeacherDataProvider teacherDataProvider, IStudentDataProvider studentDataProvider)
         {
             _groupDataProvider = groupDataProvider;
             _teacherDataProvider = teacherDataProvider;
+            _studentDataProvider = studentDataProvider;
             CreateCommand = new DelegateCommand(Create);
             SaveCommand = new DelegateCommand(async (param) => await SaveAsync(param));
             ClearGroupCommand = new DelegateCommand(async (param) => await ClearGroupAsync(param), CanClearGroup);
             DeleteCommand = new DelegateCommand(Delete, CanDelete);
-            ImportStudentsCommand = new DelegateCommand(ImportStudents);
+            //ImportStudentsCommand = new DelegateCommand(ImportStudents);
             ExportStudentsCommand = new DelegateCommand(async (parameter) => await ExportStudentsAsync(parameter));
         }
 
         public ObservableCollection<GroupItemViewModel> Groups { get; } = new();
         public ObservableCollection<TeacherItemViewModel> Teachers { get; } = new();
-        public ObservableCollection<StudentItemViewModel>? Students { get; }
+        public ObservableCollection<StudentItemViewModel>? Students { get; } = new();
         public GroupItemViewModel? SelectedGroup
         {
             get => _selectedGroup;
@@ -39,6 +42,7 @@ namespace Courses.WPF.ViewModel
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsGroupSelected));
                 RaisePropertyChanged(nameof(SelectedGroup.StudentCount));
+                RaisePropertyChanged(nameof(SelectedGroup.Students));
                 DeleteCommand.RaiseCanExecuteChanged();
                 ClearGroupCommand.RaiseCanExecuteChanged();
 
@@ -91,6 +95,7 @@ namespace Courses.WPF.ViewModel
                 }
             }
             await LoadTeachersAsync();
+            await LoadGroupStudentsAsync();
         }
 
         private async Task LoadTeachersAsync()
@@ -107,13 +112,33 @@ namespace Courses.WPF.ViewModel
             }
         }
 
-       private GroupItemViewModel? MapStudentsGroupToGroupItemViewModel(StudentsGroup? studentsGroup)
+        private async Task LoadGroupStudentsAsync()
+        {
+            if (Students != null)
+            {
+                Students.Clear();
+
+                var students = await _studentDataProvider.GetAllAsync();
+                Debug.WriteLine($"students in LoadGroupStudentsAsync: {students}");
+
+                if (students is not null)
+                {
+                    foreach (var student in students)
+                    {
+                        Students.Add(new StudentItemViewModel(student));
+                    }
+                }
+            }
+            //what if Students is null?
+        }
+
+        private GroupItemViewModel? MapStudentsGroupToGroupItemViewModel(StudentsGroup? studentsGroup)
         {
             if (studentsGroup == null)
             {
                 return null;
             }
-
+            
             return new GroupItemViewModel(studentsGroup);
         }
         public async Task ExportStudentsAsync(object? parameter)
@@ -123,9 +148,10 @@ namespace Courses.WPF.ViewModel
                 MessageBox.Show("Please select a group first.", "Export", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            StudentsGroup studentsGroup = await _groupDataProvider.GetGroupWithStudentsAsync(SelectedGroup.Id);
-            SelectedGroup = MapStudentsGroupToGroupItemViewModel(studentsGroup);
-
+            
+                StudentsGroup studentsGroup = await _groupDataProvider.GetGroupWithStudentsAsync(SelectedGroup.Id); //?
+                SelectedGroup = MapStudentsGroupToGroupItemViewModel(studentsGroup);//?
+            
             if (SelectedGroup == null)
             {
                 MessageBox.Show("Group not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -134,7 +160,7 @@ namespace Courses.WPF.ViewModel
 
             if (SelectedGroup.Students == null || !SelectedGroup.Students.Any())
             {
-                Debug.WriteLine($"SelectedGroup.Students: {SelectedGroup.Students}"); //got emopty SelectedGroup.Students: 
+                Debug.WriteLine($"SelectedGroup.Students: {SelectedGroup.Students}"); //got empty SelectedGroup.Students: 
                 MessageBox.Show("No students to export.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
@@ -167,66 +193,66 @@ namespace Courses.WPF.ViewModel
         }
 
 
-        private async void ImportStudents(object? parameter)
-        {
-            //if (SelectedGroup == null)
-            //{
-            //    MessageBox.Show("Please select a group first.", "Import", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //    return;
-            //}
+        //private async void ImportStudents(object? parameter)
+        //{
+        //    //if (SelectedGroup == null)
+        //    //{
+        //    //    MessageBox.Show("Please select a group first.", "Import", MessageBoxButton.OK, MessageBoxImage.Warning);
+        //    //    return;
+        //    //}
 
-            var openFileDialog = new Microsoft.Win32.OpenFileDialog
-            {
-                Filter = "CSV Files (*.csv)|*.csv"
-            };
+        //    var openFileDialog = new Microsoft.Win32.OpenFileDialog
+        //    {
+        //        Filter = "CSV Files (*.csv)|*.csv"
+        //    };
 
-            if (openFileDialog.ShowDialog() == true)
-            {
-                try
-                {
-                    SelectedGroup.Students.Clear();
-                    await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
+        //    if (openFileDialog.ShowDialog() == true)
+        //    {
+        //        try
+        //        {
+        //            SelectedGroup.Students.Clear();
+        //            await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
 
-                    using (var reader = new StreamReader(openFileDialog.FileName))
-                    {
-                        string? line;
-                        bool isFirstLine = true;
+        //            using (var reader = new StreamReader(openFileDialog.FileName))
+        //            {
+        //                string? line;
+        //                bool isFirstLine = true;
 
-                        while ((line = reader.ReadLine()) != null)
-                        {
-                            if (isFirstLine)
-                            {
-                                isFirstLine = false;
-                                continue;
-                            }
+        //                while ((line = reader.ReadLine()) != null)
+        //                {
+        //                    if (isFirstLine)
+        //                    {
+        //                        isFirstLine = false;
+        //                        continue;
+        //                    }
 
-                            var values = line.Split(',');
-                            if (values.Length == 3)
-                            {
-                                var student = new Student
-                                {
-                                    StudentId = int.Parse(values[0]),
-                                    FirstName = values[1],
-                                    LastName = values[2],
-                                    GroupId = SelectedGroup.Model.Id
-                                };
+        //                    var values = line.Split(',');
+        //                    if (values.Length == 3)
+        //                    {
+        //                        var student = new Student
+        //                        {
+        //                            StudentId = int.Parse(values[0]),
+        //                            FirstName = values[1],
+        //                            LastName = values[2],
+        //                            GroupId = SelectedGroup.Model.Id
+        //                        };
 
-                                SelectedGroup.Students.Add(student);
-                            }
-                        }
-                    }
+        //                        SelectedGroup.Students.Add(student);
+        //                    }
+        //                }
+        //            }
 
-                    await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
-                    RaisePropertyChanged(nameof(SelectedGroup));
+        //            await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
+        //            RaisePropertyChanged(nameof(SelectedGroup));
 
-                    MessageBox.Show("Import successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error importing students: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-        }
+        //            MessageBox.Show("Import successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            MessageBox.Show($"Error importing students: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        }
+        //    }
+        //}
 
 
         private void Create(object? parameter)
@@ -333,35 +359,6 @@ namespace Courses.WPF.ViewModel
                 RaisePropertyChanged(nameof(SelectedGroup));
             }
         }
-
-        //private bool CanExportStudents()
-        //{
-        //    return SelectedGroup != null && SelectedGroup.Students != null && SelectedGroup.Students.Any();
-        //}
-
-        //private bool CanExportStudents()
-        //{
-        //    if (SelectedGroup == null)
-        //    {
-        //        Debug.WriteLine("SelectedGroup is null.");
-        //        return false;
-        //    }
-
-        //    if (SelectedGroup.Students == null)
-        //    {
-        //        Debug.WriteLine("SelectedGroup.Students is null.");
-        //        return false;
-        //    }
-
-        //    if (!SelectedGroup.Students.Any())
-        //    {
-        //        Debug.WriteLine("SelectedGroup.Students is empty.");
-        //        return false;
-        //    }
-
-        //    Debug.WriteLine("CanExportStudents evaluated to true.");
-        //    return true;
-        //}
 
     }
 }

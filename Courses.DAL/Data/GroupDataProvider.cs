@@ -1,4 +1,5 @@
-﻿using Courses.DAL.Models;
+﻿using System.Diagnostics;
+using Courses.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Courses.DAL.Data
@@ -15,6 +16,7 @@ namespace Courses.DAL.Data
         {
             return await _context.StudentsGroups
                 .Include(g => g.Teacher)
+                .Include(g => g.Students)
                 .ToListAsync();
         }
 
@@ -40,11 +42,19 @@ namespace Courses.DAL.Data
         //    _context.Entry(group).Collection(g => g.Students).Load();
         //}
 
+        //public async Task<StudentsGroup?> GetGroupWithStudentsAsync(int groupId)
+        //{
+        //    return await _context.StudentsGroups
+        //        .Include(g => g.Students)
+        //        .FirstOrDefaultAsync(g => g.Id == groupId);
+        //}
+
         public async Task<StudentsGroup?> GetGroupWithStudentsAsync(int groupId)
         {
             return await _context.StudentsGroups
+                .Where(g => g.Id == groupId)
                 .Include(g => g.Students)
-                .FirstOrDefaultAsync(g => g.Id == groupId);
+                .FirstOrDefaultAsync();
         }
     }
 }
