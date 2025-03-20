@@ -26,7 +26,7 @@ namespace Courses.WPF.ViewModel
             SaveCommand = new DelegateCommand(async (param) => await SaveAsync(param));
             ClearGroupCommand = new DelegateCommand(async (param) => await ClearGroupAsync(param), CanClearGroup);
             DeleteCommand = new DelegateCommand(Delete, CanDelete);
-            //ImportStudentsCommand = new DelegateCommand(ImportStudents);
+            ImportStudentsCommand = new DelegateCommand(ImportStudents);
             ExportStudentsCommand = new DelegateCommand(async (parameter) => await ExportStudentsAsync(parameter));
         }
 
@@ -129,19 +129,10 @@ namespace Courses.WPF.ViewModel
                     }
                 }
             }
-            //what if Students is null?
         }
 
-        private GroupItemViewModel? MapStudentsGroupToGroupItemViewModel(StudentsGroup? studentsGroup)
-        {
-            if (studentsGroup == null)
-            {
-                return null;
-            }
-            
-            return new GroupItemViewModel(studentsGroup);
-        }
-        public async Task ExportStudentsAsync(object? parameter)
+        
+        private async Task ExportStudentsAsync(object? parameter)
         {
             if (SelectedGroup == null)
             {
@@ -149,7 +140,7 @@ namespace Courses.WPF.ViewModel
                 return;
             }
             
-                StudentsGroup studentsGroup = await _groupDataProvider.GetGroupWithStudentsAsync(SelectedGroup.Id); //?
+                StudentsGroup studentsGroup = await _groupDataProvider.GetGroupWithStudentsAsync(SelectedGroup.Id);
                 SelectedGroup = MapStudentsGroupToGroupItemViewModel(studentsGroup);//?
             
             if (SelectedGroup == null)
@@ -160,7 +151,7 @@ namespace Courses.WPF.ViewModel
 
             if (SelectedGroup.Students == null || !SelectedGroup.Students.Any())
             {
-                Debug.WriteLine($"SelectedGroup.Students: {SelectedGroup.Students}"); //got empty SelectedGroup.Students: 
+                Debug.WriteLine($"SelectedGroup.Students: {SelectedGroup.Students}");
                 MessageBox.Show("No students to export.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
@@ -177,7 +168,7 @@ namespace Courses.WPF.ViewModel
                 {
                     using (var writer = new StreamWriter(saveFileDialog.FileName))
                     {
-                        writer.WriteLine("StudentId,FirstName,LastName"); // CSV Header
+                        writer.WriteLine("StudentId,FirstName,LastName");
                         foreach (var student in SelectedGroup.Students)
                         {
                             writer.WriteLine($"{student.StudentId},{student.FirstName},{student.LastName}");
@@ -193,66 +184,98 @@ namespace Courses.WPF.ViewModel
         }
 
 
-        //private async void ImportStudents(object? parameter)
-        //{
-        //    //if (SelectedGroup == null)
-        //    //{
-        //    //    MessageBox.Show("Please select a group first.", "Import", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //    //    return;
-        //    //}
+        private async void ImportStudents(object? parameter)
+        {
+            if (SelectedGroup == null)
+            {
+                MessageBox.Show("Please select a group first.", "Import", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-        //    var openFileDialog = new Microsoft.Win32.OpenFileDialog
-        //    {
-        //        Filter = "CSV Files (*.csv)|*.csv"
-        //    };
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "CSV Files (*.csv)|*.csv"
+            };
 
-        //    if (openFileDialog.ShowDialog() == true)
-        //    {
-        //        try
-        //        {
-        //            SelectedGroup.Students.Clear();
-        //            await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    var studentsToAdd = new List<Student>();
+                    var processedStudentIds = new HashSet<int>();
 
-        //            using (var reader = new StreamReader(openFileDialog.FileName))
-        //            {
-        //                string? line;
-        //                bool isFirstLine = true;
+                    using (var reader = new StreamReader(openFileDialog.FileName))
+                    {
+                        string? line;
+                        bool isFirstLine = true;
 
-        //                while ((line = reader.ReadLine()) != null)
-        //                {
-        //                    if (isFirstLine)
-        //                    {
-        //                        isFirstLine = false;
-        //                        continue;
-        //                    }
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            if (isFirstLine)
+                            {
+                                isFirstLine = false;
+                                continue;
+                            }
 
-        //                    var values = line.Split(',');
-        //                    if (values.Length == 3)
-        //                    {
-        //                        var student = new Student
-        //                        {
-        //                            StudentId = int.Parse(values[0]),
-        //                            FirstName = values[1],
-        //                            LastName = values[2],
-        //                            GroupId = SelectedGroup.Model.Id
-        //                        };
+                            var values = line.Split(',');
+                            if (values.Length == 3)
+                            {
+                                if (int.TryParse(values[0], out int studentId))
+                                {
+                                    if (processedStudentIds.Contains(studentId))
+                                    {
+                                        MessageBox.Show($"Duplicate StudentId: {studentId} in CSV. Skipping.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                        continue;
+                                    }
+                                    processedStudentIds.Add(studentId);
 
-        //                        SelectedGroup.Students.Add(student);
-        //                    }
-        //                }
-        //            }
+                                    var student = new Student
+                                    {
+                                        StudentId = studentId,
+                                        FirstName = values[1],
+                                        LastName = values[2],
+                                        GroupId = SelectedGroup.Model.Id
+                                    };
 
-        //            await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
-        //            RaisePropertyChanged(nameof(SelectedGroup));
+                                    studentsToAdd.Add(student);
+                                }
+                                else
+                                {
+                                    MessageBox.Show($"Invalid StudentId: {values[0]} in CSV. Skipping.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show($"Invalid CSV line: {line}", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            }
+                        }
+                    }
+                    
+                    SelectedGroup.Model.Students.Clear();
+                    foreach (var student in studentsToAdd)
+                    {
+                        SelectedGroup.Model.Students.Add(student);
+                    }
 
-        //            MessageBox.Show("Import successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            MessageBox.Show($"Error importing students: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        //        }
-        //    }
-        //}
+                    await _groupDataProvider.UpdateAsync(SelectedGroup.Model);
+                    SelectedGroup.Students.Clear();
+                    foreach (var student in SelectedGroup.Model.Students)
+                    {
+                        SelectedGroup.Students.Add(new StudentItemViewModel(student));
+                    }
+
+                    RaisePropertyChanged(nameof(SelectedGroup.Students));
+
+                    MessageBox.Show("Import successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Error importing students: {ex.Message}");
+                    Debug.WriteLine(ex.StackTrace);
+                    MessageBox.Show($"Error importing students: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
 
 
         private void Create(object? parameter)
@@ -324,6 +347,16 @@ namespace Courses.WPF.ViewModel
         }
 
         private bool CanDelete(object? parameter) => SelectedGroup is not null;
+
+        private GroupItemViewModel? MapStudentsGroupToGroupItemViewModel(StudentsGroup? studentsGroup)
+        {
+            if (studentsGroup == null)
+            {
+                return null;
+            }
+
+            return new GroupItemViewModel(studentsGroup);
+        }
 
         public async Task ClearGroupAsync(object? parameter = null)
         {
