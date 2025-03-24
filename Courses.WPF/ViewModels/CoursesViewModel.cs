@@ -29,10 +29,6 @@ namespace Courses.WPF.ViewModel
             }
         }
 
-        //add SelectedGroupStudents
-       // public ObservableCollection<Student> SelectedGroupStudents =>
-         //  new ObservableCollection<Student>(_selectedGroup?.Students ?? Enumerable.Empty<Student>());
-
         public GroupItemViewModel? SelectedGroup
         {
             get => _selectedGroup;
@@ -41,9 +37,13 @@ namespace Courses.WPF.ViewModel
                 _selectedGroup = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsGroupSelected));
-               
             }
         }
+
+        //add SelectedGroupStudents
+        // public ObservableCollection<Student> SelectedGroupStudents =>
+        //  new ObservableCollection<Student>(_selectedGroup?.Students ?? Enumerable.Empty<Student>());
+
         public bool IsCourseSelected => SelectedCourse is not null;
         public bool IsGroupSelected => SelectedGroup is not null;
 
