@@ -130,7 +130,6 @@ namespace Courses.WPF.ViewModel
                 }
             }
         }
-
         
         private async Task ExportStudentsAsync(object? parameter)
         {
@@ -182,7 +181,6 @@ namespace Courses.WPF.ViewModel
                 }
             }
         }
-
 
         private async void ImportStudents(object? parameter)
         {
@@ -276,7 +274,6 @@ namespace Courses.WPF.ViewModel
                 }
             }
         }
-
 
         private void Create(object? parameter)
         {
@@ -392,6 +389,5 @@ namespace Courses.WPF.ViewModel
                 RaisePropertyChanged(nameof(SelectedGroup));
             }
         }
-
     }
 }

@@ -2,6 +2,7 @@
 using Courses.DAL.Models;
 using Courses.WPF.Command;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Courses.WPF.ViewModel
 {
@@ -14,6 +15,7 @@ namespace Courses.WPF.ViewModel
             _studentDataProvider = studentDataProvider;
             CreateCommand = new DelegateCommand(Create);
             DeleteCommand = new DelegateCommand(Delete, CanDelete);
+            SaveCommand = new DelegateCommand(async (param) => await SaveAsync(param));
         }
         public ObservableCollection<StudentItemViewModel> Students { get; } = new();
         public StudentItemViewModel? SelectedStudent
@@ -31,6 +33,7 @@ namespace Courses.WPF.ViewModel
 
         public DelegateCommand CreateCommand { get; }
         public DelegateCommand DeleteCommand { get; }
+        public DelegateCommand SaveCommand { get; }
 
         public override async Task LoadAsync()
         {
@@ -49,6 +52,7 @@ namespace Courses.WPF.ViewModel
                 }
             }
         }
+
         private void Create(object? parameter)
         {
             var student = new Student { FirstName = "Name" };
@@ -67,5 +71,45 @@ namespace Courses.WPF.ViewModel
         }
 
         private bool CanDelete(object? parameter) => SelectedStudent is not null;
+
+        private async Task SaveAsync(object? parameter)
+        {
+            if (SelectedStudent == null)
+                return;
+
+            try
+            {
+                var student = MapToStudent(SelectedStudent);
+
+                if (student != null && student.StudentId == 0)
+                {
+                    await _studentDataProvider.AddAsync(student);
+                }
+                else
+                {
+                    await _studentDataProvider.UpdateAsync(student);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error saving student: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Debug.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
+            }
+        }
+
+        private Student MapToStudent(StudentItemViewModel studentVm)
+        {
+            return new Student
+            {
+                StudentId = studentVm.StudentId,
+                FirstName = studentVm.FirstName,
+                LastName = studentVm.LastName,
+                GroupId = studentVm.GroupId
+            };
+        }
     }
 }

@@ -15,5 +15,23 @@ namespace Courses.DAL.Data
         {
             return await _context.Students.ToListAsync();
         }
+
+        public async Task UpdateAsync(Student student)
+        {
+            var trackedStudent = await _context.Students.FindAsync(student.StudentId);
+            if (trackedStudent != null)
+            {
+                trackedStudent.FirstName = student.FirstName;
+                trackedStudent.LastName = student.LastName;
+                trackedStudent.GroupId = student.GroupId;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task AddAsync(Student student)
+        {
+            _context.Students.Add(student);
+            await _context.SaveChangesAsync();
+        }
     }
 }

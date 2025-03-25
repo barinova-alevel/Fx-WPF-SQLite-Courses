@@ -84,10 +84,23 @@
             Margin="10"
             Visibility="{Binding IsStudentSelected, Converter={StaticResource BooleanToVisibilityConv}}">
             <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical" />
-            <Label>Student's First Name:</Label>
+            <Label Content="Student's First Name:" />
             <TextBox Text="{Binding SelectedStudent.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Label>Student's Last Name:</Label>
+            <Label Content="Student's Last Name:" />
             <TextBox Text="{Binding SelectedStudent.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <StackPanel
+                Margin="10"
+                HorizontalAlignment="Stretch"
+                Orientation="Vertical">
+                <Grid Margin="10,5,5,5">
+                    <Button
+                        Grid.Column="0"
+                        Command="{Binding SaveCommand}"
+                        Content="Save"
+                        Style="{StaticResource StyledButton}" />
+                </Grid>
+            </StackPanel>
+
         </StackPanel>
     </Grid>
 </UserControl>

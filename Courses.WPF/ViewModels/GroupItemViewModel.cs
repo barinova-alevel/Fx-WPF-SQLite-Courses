@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
 using Courses.DAL.Models;
 
 namespace Courses.WPF.ViewModel
@@ -37,7 +36,6 @@ namespace Courses.WPF.ViewModel
                 RaisePropertyChanged();
             }
         }
-
         public Teacher? Teacher
         {
             get => _model.Teacher;
