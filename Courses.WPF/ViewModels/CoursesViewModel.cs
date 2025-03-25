@@ -26,6 +26,7 @@ namespace Courses.WPF.ViewModel
                 _selectedCourse = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsCourseSelected));
+                //LoadGroups();
             }
         }
 
@@ -37,12 +38,9 @@ namespace Courses.WPF.ViewModel
                 _selectedGroup = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsGroupSelected));
+                LoadStudents();
             }
         }
-
-        //add SelectedGroupStudents
-        // public ObservableCollection<Student> SelectedGroupStudents =>
-        //  new ObservableCollection<Student>(_selectedGroup?.Students ?? Enumerable.Empty<Student>());
 
         public bool IsCourseSelected => SelectedCourse is not null;
         public bool IsGroupSelected => SelectedGroup is not null;
@@ -65,25 +63,32 @@ namespace Courses.WPF.ViewModel
             }
         }
 
-        //private async void LoadCoursesAsync()
-        //{
-        //    var courses = await _courseDataProvider.GetAllAsync();
-        //    if (courses != null)
-        //    {
-        //        Courses.Clear();
-        //        foreach (var course in courses)
-        //        {
-        //            Courses.Add(new CourseItemViewModel(course));
-        //        }
-        //    }
-        //}
+        private void LoadGroups()
+        {
+            Groups.Clear();
+            if (SelectedCourse != null && SelectedCourse.StudentsGroups != null)
+            {
+                foreach (var group in SelectedCourse.StudentsGroups)
+                {
+                    Groups.Add(new GroupItemViewModel(group));
+                }
+            }
+        }
 
-        //public async Task LoadCoursesWithGroups()
-        //{
-        //    var courses = await _courseDataProvider.GetAllAsync();
-        //    var courses = context.Courses.Include(c => c.Groups).ToList();
-        //    Courses = new ObservableCollection<Course>(courses);
+        private void LoadStudents()
+        {
+            if (Students is not null)
+            {
+                Students.Clear();
+            }
+            if (SelectedGroup != null && SelectedGroup.Students != null)
+            {
+                foreach (var student in SelectedGroup.Students)
+                {
+                    Students.Add(student);
+                }
+            }
+        }
 
-        //}
     }
 }

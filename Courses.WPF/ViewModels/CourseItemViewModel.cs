@@ -43,25 +43,15 @@ namespace Courses.WPF.ViewModel
             }
         }
 
-        //got exception if use following:
-        //public ObservableCollection<StudentsGroup> StudentsGroups
-        //{
-        //    get => (ObservableCollection<StudentsGroup>)_model.StudentsGroups;
-        //    set
-        //    {
-        //        _model.StudentsGroups = value;
-        //        RaisePropertyChanged();
-        //    }
-        //}
+        public ObservableCollection<Student> GetStudentsAsObservable(int groupId)
+        {
+            return new ObservableCollection<Student>(GetStudentsFromGroup(groupId));
+        }
 
-        //public ICollection<Student> Students
-        //{
-        //    get => _model.Students;
-        //    set
-        //    {
-        //        _model.Students = value;
-        //        RaisePropertyChanged();
-        //    }
-        //}
+        private ICollection<Student> GetStudentsFromGroup(int groupId)
+        {
+            var group = _model.StudentsGroups.FirstOrDefault(g => g.Id == groupId);
+            return group?.Students ?? new List<Student>();
+        }
     }
 }

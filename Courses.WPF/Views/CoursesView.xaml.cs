@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Courses.DAL.Data;
+using Courses.DAL.Models;
 using Courses.WPF.ViewModel;
 
 namespace Courses.WPF.View
@@ -15,7 +17,6 @@ namespace Courses.WPF.View
             Loaded += CoursesView_Loaded;
         }
 
-        //without following constructor got exception in App.mainWindow?.Show();
         public CoursesView()
         {
             InitializeComponent();
