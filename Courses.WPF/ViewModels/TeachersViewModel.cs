@@ -2,6 +2,7 @@
 using Courses.DAL.Models;
 using Courses.WPF.Command;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Courses.WPF.ViewModel
 {
@@ -14,6 +15,7 @@ namespace Courses.WPF.ViewModel
             _teacherDataProvider = teacherDataProvider;
             CreateCommand = new DelegateCommand(Create);
             DeleteCommand = new DelegateCommand(Delete, CanDelete);
+            SaveCommand = new DelegateCommand(async (param) => await SaveAsync(param));
         }
         public ObservableCollection<TeacherItemViewModel> Teachers { get; } = new();
         public TeacherItemViewModel? SelectedTeacher
@@ -31,6 +33,8 @@ namespace Courses.WPF.ViewModel
 
         public DelegateCommand CreateCommand { get; }
         public DelegateCommand DeleteCommand { get; }
+        public DelegateCommand SaveCommand { get; }
+
         public override async Task LoadAsync()
         {
             if (Teachers.Any())
@@ -67,5 +71,44 @@ namespace Courses.WPF.ViewModel
         }
 
         private bool CanDelete(object? parameter) => SelectedTeacher is not null;
+
+        private async Task SaveAsync(object? parameter)
+        {
+            if (SelectedTeacher == null)
+                return;
+
+            try
+            {
+                var teacher = MapToTeacher(SelectedTeacher);
+
+                if (teacher != null && teacher.TeacherId == 0)
+                {
+                    await _teacherDataProvider.AddAsync(teacher);
+                }
+                else
+                {
+                    await _teacherDataProvider.UpdateAsync(teacher);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error saving teacher: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Debug.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
+            }
+        }
+
+        private Teacher MapToTeacher(TeacherItemViewModel teacherVm)
+        {
+            return new Teacher
+            {
+                TeacherId = teacherVm.TeacherId,
+                FirstName = teacherVm.FirstName,
+                LastName = teacherVm.LastName,
+            };
+        }
     }
 }
