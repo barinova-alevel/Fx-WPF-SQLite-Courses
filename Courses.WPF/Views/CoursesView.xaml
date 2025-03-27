@@ -47,6 +47,11 @@
                 BorderThickness="0.5"
                 ItemsSource="{Binding Courses}"
                 SelectedItemChanged="TreeView_SelectedItemChanged">
+                <TreeView.Resources>
+                    <Style TargetType="TreeViewItem">
+                        <Setter Property="Foreground" Value="#000000" />
+                    </Style>
+                </TreeView.Resources>
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type models:Course}" ItemsSource="{Binding StudentsGroups}">
                         <TextBlock Text="{Binding Name}" />
@@ -68,35 +73,40 @@
             Orientation="Vertical"
             Visibility="{Binding IsGroupSelected, Converter={StaticResource BooleanToVisibilityConv}}">
             <Label Content="Students:" Foreground="#00008B " />
-            <ListView ItemsSource="{Binding Students}">
+
+            <ListView
+                Height="285"
+                Margin="20,15,20,20"
+                BorderThickness="0.5"
+                ItemsSource="{Binding Students}"
+                ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListView.Resources>
+                    <Style TargetType="GridViewColumnHeader">
+                        <Setter Property="Foreground" Value="DarkBlue" />
+                        <Setter Property="FontSize" Value="16" />
+
+                    </Style>
+                </ListView.Resources>
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="FontSize" Value="16" />
-                        <Setter Property="Margin" Value="5,0,0,5" />
-                        <Setter Property="Foreground" Value="#00008B" />
+                        <Setter Property="Margin" Value="10,0,0,5" />
+                        <Setter Property="Foreground" Value="#000" />
                     </Style>
                 </ListView.ItemContainerStyle>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding FirstName}" Header="First Name">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock
-                                        Margin="10,0,0,10"
-                                        FontSize="16"
-                                        Foreground="#00008B"
-                                        Text="{Binding FirstName}" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding LastName}" Header="Last Name" />
+                        <GridViewColumn
+                            Width="150"
+                            DisplayMemberBinding="{Binding FirstName}"
+                            Header="First Name" />
+                        <GridViewColumn
+                            Width="300"
+                            DisplayMemberBinding="{Binding LastName}"
+                            Header="Last Name" />
                     </GridView>
                 </ListView.View>
             </ListView>
-
-
         </StackPanel>
-
     </Grid>
-
 </UserControl>

@@ -121,6 +121,7 @@
                     <Button
                         Grid.Column="2"
                         Content="Summary"
+                        IsEnabled="False"
                         Style="{StaticResource StyledButton}" />
                 </Grid>
             </StackPanel>
