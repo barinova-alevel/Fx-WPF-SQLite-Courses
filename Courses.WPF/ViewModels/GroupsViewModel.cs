@@ -140,7 +140,7 @@ namespace Courses.WPF.ViewModel
             }
             
                 StudentsGroup studentsGroup = await _groupDataProvider.GetGroupWithStudentsAsync(SelectedGroup.Id);
-                SelectedGroup = MapStudentsGroupToGroupItemViewModel(studentsGroup);//?
+                SelectedGroup = MapStudentsGroupToGroupItemViewModel(studentsGroup);
             
             if (SelectedGroup == null)
             {

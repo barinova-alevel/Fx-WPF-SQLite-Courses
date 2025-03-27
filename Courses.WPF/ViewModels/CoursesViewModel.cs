@@ -36,7 +36,10 @@ namespace Courses.WPF.ViewModel
             set
             {
                 _selectedGroup = value;
+                Console.WriteLine($"SelectedGroup changed to: {_selectedGroup.Name}");
                 RaisePropertyChanged();
+                RaisePropertyChanged(nameof(SelectedGroup));
+                RaisePropertyChanged(nameof(SelectedGroup.Students));
                 RaisePropertyChanged(nameof(IsGroupSelected));
                 LoadStudents();
             }
