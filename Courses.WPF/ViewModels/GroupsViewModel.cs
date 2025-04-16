@@ -130,7 +130,6 @@ namespace Courses.WPF.ViewModel
                 }
             }
         }
-
         
         private async Task ExportStudentsAsync(object? parameter)
         {
@@ -141,7 +140,7 @@ namespace Courses.WPF.ViewModel
             }
             
                 StudentsGroup studentsGroup = await _groupDataProvider.GetGroupWithStudentsAsync(SelectedGroup.Id);
-                SelectedGroup = MapStudentsGroupToGroupItemViewModel(studentsGroup);//?
+                SelectedGroup = MapStudentsGroupToGroupItemViewModel(studentsGroup);
             
             if (SelectedGroup == null)
             {
@@ -182,7 +181,6 @@ namespace Courses.WPF.ViewModel
                 }
             }
         }
-
 
         private async void ImportStudents(object? parameter)
         {
@@ -276,7 +274,6 @@ namespace Courses.WPF.ViewModel
                 }
             }
         }
-
 
         private void Create(object? parameter)
         {
@@ -392,6 +389,5 @@ namespace Courses.WPF.ViewModel
                 RaisePropertyChanged(nameof(SelectedGroup));
             }
         }
-
     }
 }

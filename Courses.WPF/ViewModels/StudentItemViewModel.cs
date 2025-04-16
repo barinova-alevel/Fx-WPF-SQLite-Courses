@@ -12,15 +12,15 @@ namespace Courses.WPF.ViewModel
         }
         public int StudentId => _model.StudentId;
 
-        //public int GroupId
-        //{
-        //    get => _model.GroupId;
-        //    set
-        //    {
-        //        _model.GroupId = value;
-        //        RaisePropertyChanged();
-        //    }
-        //}
+        public int GroupId
+        {
+            get => _model.GroupId;
+            set
+            {
+                _model.GroupId = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public string? FirstName
         {

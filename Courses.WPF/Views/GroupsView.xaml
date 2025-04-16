@@ -20,14 +20,14 @@
             <Setter Property="Height" Value="40" />
             <Setter Property="Margin" Value="10" />
             <Setter Property="FontSize" Value="16" />
-            <Setter Property="Background" Value="AliceBlue" />
-            <Setter Property="Foreground" Value="DarkBlue" />
+            <Setter Property="Background" Value="#f0f8ff" />
+            <Setter Property="Foreground" Value="#00008B" />
             <Setter Property="BorderThickness" Value="0.5" />
         </Style>
         <Style TargetType="Label">
             <Setter Property="FontSize" Value="16" />
             <Setter Property="Margin" Value="5,5,0,0" />
-            <Setter Property="Foreground" Value="DarkBlue" />
+            <Setter Property="Foreground" Value="#00008B" />
         </Style>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="16" />
@@ -38,15 +38,15 @@
             <Setter Property="Margin" Value="5,0,0,5" />
             <Setter Property="Padding" Value="5" />
             <Setter Property="BorderThickness" Value="0.5" />
-            <Setter Property="BorderBrush" Value="DarkBlue" />
+            <Setter Property="BorderBrush" Value="#00008B" />
         </Style>
         <Style TargetType="ComboBox">
             <Setter Property="FontSize" Value="16" />
             <Setter Property="Margin" Value="5,0,0,5" />
             <Setter Property="Padding" Value="5" />
             <Setter Property="BorderThickness" Value="0.5" />
-            <Setter Property="BorderBrush" Value="DarkBlue" />
-            <Setter Property="Background" Value="AliceBlue" />
+            <Setter Property="BorderBrush" Value="#00008B" />
+            <Setter Property="Background" Value="#f0f8ff" />
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -56,7 +56,7 @@
         </Grid.ColumnDefinitions>
 
         <!--  Groups list  -->
-        <Grid Background="AliceBlue">
+        <Grid Background="#f0f8ff">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
@@ -66,7 +66,7 @@
                     Margin="10"
                     Content="Groups"
                     FontSize="24"
-                    Foreground="DarkBlue" />
+                    Foreground="#00008B" />
                 <Button
                     Width="75"
                     Margin="10"
@@ -121,6 +121,7 @@
                     <Button
                         Grid.Column="2"
                         Content="Summary"
+                        IsEnabled="False"
                         Style="{StaticResource StyledButton}" />
                 </Grid>
             </StackPanel>
@@ -129,8 +130,8 @@
                 <TextBox Text="{Binding SelectedGroup.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged" />
                 <Label Content="Group Teacher:" />
                 <ComboBox
-                    Background="AliceBlue"
-                    BorderBrush="DarkBlue"
+                    Background="#f0f8ff"
+                    BorderBrush="#00008B"
                     DisplayMemberPath="LastName"
                     ItemsSource="{Binding Path=Teachers}"
                     SelectedItem="{Binding SelectedTeacher, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
